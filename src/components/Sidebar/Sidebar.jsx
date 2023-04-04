@@ -8,7 +8,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar__logo">
-        <img src="/logo-wide-hollow.svg" alt="Plantwise Logo" />
+        <ReactSVG src="/logo-wide-modern.svg" />
       </div>
       <ul className="sidebar__menu">
         <li>
