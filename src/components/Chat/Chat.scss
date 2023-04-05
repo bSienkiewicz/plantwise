@@ -1,7 +1,7 @@
 @import '../../styles/variables.scss';
 
 .chat{
-    border-left: 1px solid #adadad;
+    // border-left: 1px solid #adadad;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -16,6 +16,10 @@
     right:0;
     z-index: 10;
     transition: 0.8s ease all;
+
+    @include mq($sm) {
+        display: none;
+    }
 
     &.show{
         transform: translateX(0);
@@ -87,6 +91,7 @@
         background: white;
         border-radius: 5px 0 0 5px;
         border: 1px solid #adadad;
+        border-right: none;
         padding: 9px 9px 9px 9px;
         transform: translateX(-100%);
         transition: 0.3s ease all;

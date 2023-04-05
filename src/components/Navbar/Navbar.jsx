@@ -19,11 +19,11 @@ const Navbar = ({ title, device, preset, image }) => {
             <>
               <button className="navbar__button">
                 <ReactSVG src="/icons/garden-icon.svg" />
-                My garden
+                <p className="navbar__button-text">My garden</p>
               </button>
               <button className="navbar__button">
                 <ReactSVG src="/icons/garden-icon.svg" />
-                My garden
+                <p className="navbar__button-text">My garden</p>
               </button>
             </>
           )}
@@ -31,7 +31,7 @@ const Navbar = ({ title, device, preset, image }) => {
             <>
               <button className="navbar__button">
                 <ReactSVG src="/icons/garden-icon.svg" />
-                Add new plant
+                <p className="navbar__button-text">Add new plant</p>
               </button>
             </>
           )}

@@ -1,4 +1,18 @@
-$primary: #38B8B1;
-$primary-dark: #2C8C8A;
-$secondary: #F2F2F2;
+$primary: #38b8b1;
+$primary-dark: #2c8c8a;
+$secondary: #f2f2f2;
 $gray-900: #171717;
+
+$xs: 0;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;
+
+@mixin mq($width) {
+    @media (max-width: $width) {
+      @content;
+    }
+  }
+  

@@ -4,12 +4,11 @@ import { useState } from 'react';
 // const mqttUrl = 'mqtt://test.mosquitto.org';
 let client = null;
 
-export function connect(host, options) {
+export function connectMQTT(host, options) {
   client = mqtt.connect(host, options);
 
   return new Promise((resolve, reject) => {
     client.on('connect', () => {
-      console.log('connected to MQTT broker');
       resolve();
     });
 
@@ -20,13 +19,13 @@ export function connect(host, options) {
   });
 }
 
-export function disconnect() {
+export function disconnectMQTT() {
   if (client) {
     client.end();
   }
 }
 
-export function subscribe(topic, callback) {
+export function subscribeMQTT(topic, callback) {
   if (client) {
     client.subscribe(topic, (err) => {
       if (err) {
@@ -40,14 +39,14 @@ export function subscribe(topic, callback) {
   }
 }
 
-export function publish(topic, message) {
+export function publishMQTT(topic, message) {
   if (client) {
     console.log('publishing message', message, 'to topic', topic)
     client.publish(topic, message);
   }
 }
 
-export function connected () {
+export function connectedMQTT () {
   if (client) {
     return client.connected;
   } else {
