@@ -5,9 +5,9 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Chat from "./components/Chat/Chat";
 import TopbarMobile from "./components/TopbarMobile/TopbarMobile";
 
-import Dashboard from "src/Pages/Dashboard/Dashboard";
-import Garden from "src/Pages/Garden/Garden";
-import Devices from "src/Pages/Devices/Devices";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Garden from "./pages/Garden/Garden";
+import Devices from "./pages/Devices/Devices";
 
 import {
   connectedMQTT,
