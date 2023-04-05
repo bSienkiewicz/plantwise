@@ -2,16 +2,19 @@ import "./App.scss";
 import { useEffect, useState } from "react";
 import { Route, Routes, Link } from "react-router-dom";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Dashboard from "./Pages/Dashboard/Dashboard";
 import Chat from "./components/Chat/Chat";
-import Garden from "./Pages/Garden/Garden";
+import TopbarMobile from "./components/TopbarMobile/TopbarMobile";
+
+import Dashboard from "src/Pages/Dashboard/Dashboard";
+import Garden from "src/Pages/Garden/Garden";
+import Devices from "src/Pages/Devices/Devices";
+
 import {
   connectedMQTT,
   connectMQTT,
   subscribeMQTT,
   disconnectMQTT,
 } from "./utils/MQTT/MQTT_functions";
-import TopbarMobile from "./components/TopbarMobile/TopbarMobile";
 
 export default function App() {
   const [receivedMessage, setReceivedMessage] = useState("");
@@ -71,6 +74,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/garden" element={<Garden />} />
+          <Route path="/devices" element={<Devices />} />
         </Routes>
 
         <Chat message={receivedMessage} connected={connectedMQTT} />

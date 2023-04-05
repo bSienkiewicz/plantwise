@@ -26,11 +26,6 @@ const Sidebar = ({ setSmallSidebar, smallSidebar, isMobile, showMobile, setShowM
       link: "/devices",
     },
     {
-      name: "Devices2137",
-      icon: "/icons/garden-icon.svg",
-      link: "/devices",
-    },
-    {
       name: "Settings",
       icon: "/icons/settings-icon.svg",
       link: "/settings",
@@ -72,7 +67,7 @@ const Sidebar = ({ setSmallSidebar, smallSidebar, isMobile, showMobile, setShowM
           </div>
           <ul className="sidebar__menu">
             {menuItems.map((item, index) => (
-            <li>
+            <li key={index}>
               <NavLink to={item.link} className="sidebar__menu_item" onClick={() => {isMobile && setShowMobile(false)}}>
                 <ReactSVG
                   src={item.icon}
