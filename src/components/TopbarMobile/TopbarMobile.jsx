@@ -7,11 +7,10 @@ export default function TopbarMobile() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   return (
     <>
-    <Sidebar isMobile={true} showMobile={showMobileSidebar} setShowMobile={setShowMobileSidebar}/>
-    <div className="topbar_mobile">
-      <ReactSVG src="/logo-small-modern.svg" className="topbar_mobile__logo" />
-      <ReactSVG src="/icons/ellipsis-icon.svg" className="topbar_mobile__menu" onClick={() => {setShowMobileSidebar(!showMobileSidebar)}}/>
-    </div>
+      <div className="topbar_mobile">
+        <ReactSVG src="/logo-small-modern.svg" className="topbar_mobile__logo" />
+        <ReactSVG src="/icons/ellipsis-icon.svg" className="topbar_mobile__menu" onClick={() => {setShowMobileSidebar(!showMobileSidebar)}}/>
+      </div>
     </>
   );
 }

@@ -61,6 +61,7 @@ export default function App() {
   const handleReceived = (topic, message) => {
     setReceivedMessage(message);
   };
+  
   return (
     <div id="App" className={smallSidebar ? "sidebar-small" : ""}>
       <div id="sidebar">
@@ -70,13 +71,13 @@ export default function App() {
         />
       </div>
       <div id="main">
-        <TopbarMobile />
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/garden" element={<Garden />} />
           <Route path="/devices" element={<Devices />} />
         </Routes>
-
+      </div>
+      <div id="chat">
         <Chat message={receivedMessage} connected={connectedMQTT} />
       </div>
     </div>

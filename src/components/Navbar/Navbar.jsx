@@ -35,6 +35,14 @@ const Navbar = ({ title, device, preset, image }) => {
               </button>
             </>
           )}
+          {preset === "devices" && (
+            <>
+              <button className="navbar__button">
+                <ReactSVG src="/icons/garden-icon.svg" />
+                <p className="navbar__button-text">Add new device</p>
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>

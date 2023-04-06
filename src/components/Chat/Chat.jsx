@@ -17,21 +17,9 @@ const Chat = ({ message, connected }) => {
 
   return (
     <>
-      <div
-        className={`chat__backdrop ${show ? "show" : ""}`}
-        onClick={() => {
-          if (closeable) setShow(false);
-        }}
-      ></div>
       <div className={`chat ${show ? "show" : ""}`}>
         <div className="chat__content">
-          <div
-            className={`chat__toggler ${show ? "show" : ""}`}
-            onClick={() => setShow(!show)}
-          >
-            <ReactSVG src="/icons/log-icon.svg" />
-          </div>
-          <h3 className="chat__header">Device chat</h3>
+          <h3 className="chat__header">Chat</h3>
           <div className="chat__messages">
             {messages.map((message, index) => (
               <div className="chat__message" key={index}>

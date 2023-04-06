@@ -34,7 +34,7 @@ const Sidebar = ({ setSmallSidebar, smallSidebar, isMobile, showMobile, setShowM
 
   return (
     <>
-      {!isMobile && (
+      {/* {!isMobile && (
         <div
           className={`sidebar__toggle ${smallSidebar ? "rotate" : ""}`}
           onClick={() => {
@@ -46,29 +46,21 @@ const Sidebar = ({ setSmallSidebar, smallSidebar, isMobile, showMobile, setShowM
             className="sidebar__toggle_icon"
           />
         </div>
-      )}
+      )} */}
       <div
-        className={`sidebar${isMobile ? "__mobile" : ""} ${smallSidebar ? "sidebar--shrink" : ""} ${isMobile && showMobile ? "show" : ""}`}
+        className={`sidebar`}
       >
-        <div className={`sidebar${isMobile ? "__mobile" : ""}__content`}>
-          <div className={`sidebar__logo ${smallSidebar ? "d-none" : ""}`}>
+        <div className={`sidebar__content`}>
+          <div className={`sidebar__logo`}>
             <ReactSVG
-              src="/logo-wide-modern.svg"
+              src="/logo-wide-modern-black.svg"
               className="sidebar__logo--wide"
-            />
-          </div>
-          <div
-            className={`sidebar__logo--shrink ${!smallSidebar ? "d-none" : ""}`}
-          >
-            <ReactSVG
-              src="/logo-small-leaf.svg"
-              className="sidebar__logo--small"
             />
           </div>
           <ul className="sidebar__menu">
             {menuItems.map((item, index) => (
             <li key={index}>
-              <NavLink to={item.link} className="sidebar__menu_item" onClick={() => {isMobile && setShowMobile(false)}}>
+              <NavLink to={item.link} className="sidebar__menu_item">
                 <ReactSVG
                   src={item.icon}
                   className="sidebar__menu_item__icon"
@@ -91,11 +83,6 @@ const Sidebar = ({ setSmallSidebar, smallSidebar, isMobile, showMobile, setShowM
       </div>
     </>
   );
-};
-
-Sidebar.defaultProps = {
-  isMobile: false,
-  showMobile: false,
 };
 
 export default Sidebar;
