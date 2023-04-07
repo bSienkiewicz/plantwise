@@ -3,11 +3,10 @@ import { useEffect, useState } from "react";
 import { Route, Routes, Link } from "react-router-dom";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Chat from "./components/Chat/Chat";
-import TopbarMobile from "./components/TopbarMobile/TopbarMobile";
-
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Garden from "./pages/Garden/Garden";
 import Devices from "./pages/Devices/Devices";
+import AddDevice from "./pages/Devices/AddDevice/AddDevice";
 
 import {
   connectedMQTT,
@@ -16,12 +15,21 @@ import {
   disconnectMQTT,
 } from "./utils/MQTT/MQTT_functions";
 
+const routes = [
+  { path: '/', element: <Dashboard /> },
+  { path: '/garden', element: <Garden /> },
+  { path: '/devices', element: <Devices /> },
+  { path: '/devices/add', element: <AddDevice /> },
+];
+
 export default function App() {
   const [receivedMessage, setReceivedMessage] = useState("");
   const [client, setClient] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [smallSidebar, setSmallSidebar] = useState(true);
+  const [showChat, setShowChat] = useState(true);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
     connectMQTT("ws://broker.emqx.io/mqtt", {
@@ -61,20 +69,25 @@ export default function App() {
   const handleReceived = (topic, message) => {
     setReceivedMessage(message);
   };
-  
+
   return (
-    <div id="App" className={smallSidebar ? "sidebar-small" : ""}>
+    <div id="App" className={`${smallSidebar ? "sidebar-small" : ""} ${theme == 'light' ? "theme--light" : "theme--dark"}`}>
       <div id="sidebar">
         <Sidebar
           setSmallSidebar={setSmallSidebar}
           smallSidebar={smallSidebar}
         />
       </div>
-      <div id="main">
+      <div id="main" className={`${showChat ? "expand" : ""}`}>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/garden" element={<Garden />} />
-          <Route path="/devices" element={<Devices />} />
+          {routes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={route.element}
+              component={route.component}
+            />
+          ))}
         </Routes>
       </div>
       <div id="chat">

@@ -34,7 +34,10 @@ const Sidebar = ({ setSmallSidebar, smallSidebar, isMobile, showMobile, setShowM
 
   return (
     <>
-      {/* {!isMobile && (
+      <div
+        className={`sidebar`}
+      >
+      {!isMobile && (
         <div
           className={`sidebar__toggle ${smallSidebar ? "rotate" : ""}`}
           onClick={() => {
@@ -46,31 +49,28 @@ const Sidebar = ({ setSmallSidebar, smallSidebar, isMobile, showMobile, setShowM
             className="sidebar__toggle_icon"
           />
         </div>
-      )} */}
-      <div
-        className={`sidebar`}
-      >
-        <div className={`sidebar__content`}>
+      )}
           <div className={`sidebar__logo`}>
             <ReactSVG
               src="/logo-wide-modern-black.svg"
               className="sidebar__logo--wide"
+              onClick={() => {toggleSidebar()}}
             />
           </div>
-          <ul className="sidebar__menu">
+          <ul className={`sidebar__menu ${smallSidebar ? "sidebar__menu--small" : ''}`}>
             {menuItems.map((item, index) => (
             <li key={index}>
-              <NavLink to={item.link} className="sidebar__menu_item">
+              <NavLink to={item.link} className={`sidebar__menu_item ${smallSidebar ? "sidebar__menu_item--small" : ''}`}>
                 <ReactSVG
                   src={item.icon}
                   className="sidebar__menu_item__icon"
                 />
-                {smallSidebar ? "" : item.name}
+                <p className={`sidebar__menu_item__text ${smallSidebar ? 'sidebar__menu_item__text--none' : ''}`}>{item.name}</p>
               </NavLink>
             </li>
             ))}
             <li className=" logout">
-              <NavLink to="/q" className="sidebar__menu_item">
+              <NavLink to="/q" className={`sidebar__menu_item ${smallSidebar ? "sidebar__menu_item--small" : ''}`}>
                 <ReactSVG
                   src="/icons/logout-icon.svg"
                   className="sidebar__menu_item__icon"
@@ -80,7 +80,6 @@ const Sidebar = ({ setSmallSidebar, smallSidebar, isMobile, showMobile, setShowM
             </li>
           </ul>
         </div>
-      </div>
     </>
   );
 };

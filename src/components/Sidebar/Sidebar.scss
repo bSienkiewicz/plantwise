@@ -1,4 +1,4 @@
-@import "../../styles/variables.scss";
+@import '../../styles/variables.scss';
 
 $font-size: 16px;
 
@@ -13,22 +13,6 @@ $font-size: 16px;
   transition: 0.3s ease all;
   overflow: hidden;
   border-radius: 8px;
-
-  &--shrink {
-    width: 100%;
-
-    .sidebar__menu {
-      gap: 10px;
-      &_item {
-        padding: 20px 0;
-        justify-content: center;
-
-        &__icon {
-          margin-right: 0px;
-        }
-      }
-    }
-  }
 
   &__logo {
     display: flex;
@@ -64,6 +48,10 @@ $font-size: 16px;
     padding: 10px;
     box-sizing: border-box;
 
+    &--small{
+      padding: 5px;
+    }
+
     li {
       width: 100%;
 
@@ -74,10 +62,11 @@ $font-size: 16px;
 
     &_item {
       max-width: 100%;
+      min-height: 36px;
       padding: 16px 24px;
       cursor: pointer;
       text-decoration: none;
-      color: $gray-400;
+      color: $text-muted;
       display: flex;
       align-items: center;
       font-size: $font-size;
@@ -86,42 +75,45 @@ $font-size: 16px;
       transition: all 0.3s ease;
 
       &.active {
-        color: $black;
-        background-color: $gray-200;
+        color: $text;
+        background-color: $button-active;
       }
 
       &__icon {
         margin-right: 20px;
       }
-    }
-  }
 
-  &__content{
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
+      &__text{ 
+        margin: 0;
+        transition: 0.3s ease all;
+
+        &--none{
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      &--small{
+        padding: 8px 12px;
+      }
+    }
   }
 
   &__toggle {
     position: absolute;
-    top: 20px;
+    bottom: 0px;
     right: 0px;
-    transform: translateX(50%);
     cursor: pointer;
     z-index: 100;
+    background: $primary;
+    color:white;
+    border-radius: 8px;
+    width: 25px;
     height: 25px;
-    background: white;
-    border-radius: 100%;
-    width: 32px;
-    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.3s ease;
+    // transition: all 0.3s ease;
 
     &_icon {
       transform: translateX(-1px);
@@ -129,7 +121,8 @@ $font-size: 16px;
     }
 
     &.rotate {
-      transform: translateX(50%) rotate(180deg);
+      transform: rotate(180deg);
+      width: 100%;
     }
 
     @include mq($md) {

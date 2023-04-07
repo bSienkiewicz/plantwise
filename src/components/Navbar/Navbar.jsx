@@ -1,48 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Navbar.scss";
 import { ReactSVG } from "react-svg";
+import { Link } from "react-router-dom";
 
-const Navbar = ({ title, device, preset, image }) => {
-  const style = {};
-  if (image) style.backgroundImage = `url(${image})`;
+const Navbar = ({ title, device, buttons, image, bg_color, text_color }) => {
+  const container_style = {};
+  const text_style = {};
+  if (image) container_style.backgroundImage = `url(${image})`;
+  if (bg_color) container_style.backgroundColor = bg_color;
+  if (text_color) text_style.color = text_color;
+
+  useEffect(() => {
+    console.log("image", image);
+  }, []);
 
   return (
-    <div className={`navbar ${image ? "navbar--plant" : ""}`}>
-      {image && <div className="navbar__image" style={style}></div>}
+    <div className={`navbar ${image ? "navbar--plant" : ""}`} style={container_style}>
+      {image && <div className="navbar__image"></div>}
       <div className="navbar__about">
-        <h1 className="navbar__title">{title}</h1>
+        <h1 className="navbar__title" style={text_style}>{title}</h1>
         <p className="navbar__device">{device}</p>
       </div>
-      {preset != null && (
+      {buttons && (
         <div className="navbar__buttons">
-          {preset === "dashboard" && (
-            <>
-              <button className="navbar__button">
-                <ReactSVG src="/icons/garden-icon.svg" />
-                <p className="navbar__button-text">My garden</p>
-              </button>
-              <button className="navbar__button">
-                <ReactSVG src="/icons/garden-icon.svg" />
-                <p className="navbar__button-text">My garden</p>
-              </button>
-            </>
-          )}
-          {preset === "garden" && (
-            <>
-              <button className="navbar__button">
-                <ReactSVG src="/icons/garden-icon.svg" />
-                <p className="navbar__button-text">Add new plant</p>
-              </button>
-            </>
-          )}
-          {preset === "devices" && (
-            <>
-              <button className="navbar__button">
-                <ReactSVG src="/icons/garden-icon.svg" />
-                <p className="navbar__button-text">Add new device</p>
-              </button>
-            </>
-          )}
+          {buttons.map((button, index) => (
+            <Link to={button.path} key={index} className={`navbar__button ${image  ? 'navbar__button--nav_bg' : ''}`} style={text_style}>
+              <ReactSVG src={button.icon} />
+              <p className="navbar__button-text">{button.text}</p>
+            </Link>
+          ))}
         </div>
       )}
     </div>

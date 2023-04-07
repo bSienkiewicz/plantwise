@@ -1,5 +1,4 @@
 @import '../../styles/variables.scss';
-@import '../../styles/mixins.scss';
 
 .navbar {
   background-color: $gray-100;
@@ -49,8 +48,8 @@
   }
 
   &__title {
-    font-size: 32px;
-    line-height: 32px;
+    font-size: 24px;
+    line-height: 24px;
     font-weight: bold;
     margin: 0;
   }
@@ -78,19 +77,24 @@
 
   &__button{
     background-color: transparent;
-    color: white;
+    color:$black;
     letter-spacing: 0.7px;
     border: none;
     border-radius: 5px;
-    padding: 20px 20px;
+    padding: 8px;
     display: flex;
     align-items: center;
+    text-decoration: none;
     gap: 10px;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 18px;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    
+
+    &--nav_bg{
+      color:white;
+    }
 
     @include mq($sm){
       padding: 10px 10px;
@@ -102,10 +106,6 @@
       @include mq($lg){
         display: none;
       }
-    }
-
-    &:hover{
-      background-color: $primary-dark;
     }
   }
 }

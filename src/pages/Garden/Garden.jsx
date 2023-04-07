@@ -6,7 +6,7 @@ export default function Garden() {
   return (
     <>
     <Navbar title={'My garden'} preset={'garden'} />
-    <div className='garden view'>
+    <div className='garden'>
       Garden
     </div>
     </>

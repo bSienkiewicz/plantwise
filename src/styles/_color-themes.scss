@@ -1,0 +1,27 @@
+@import "_variables.scss";
+
+$theme:(
+  light:(
+  $background: white,
+  $text: black,
+  $text-muted: $gray-600,
+  $container-bg: $gray-100,
+  $button-active: $gray-200,
+  )
+
+dark (
+  $background: $black,
+  $text: $white,
+  $text-muted: $gray-600,
+  $container-bg: $gray-900,
+  $button-active: $gray-800,
+));
+
+@mixin theme($theme-name) {
+  $theme-colors: map-get($theme, $theme-name);
+
+  @each $color-name, $color-value in $theme-colors {
+    $property-name: if($color-name == "background-color", "background", "color");
+    #{$property-name}: $color-value;
+  }
+}
