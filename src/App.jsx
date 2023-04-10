@@ -31,7 +31,7 @@ export default function App() {
   const [client, setClient] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [smallSidebar, setSmallSidebar] = useState(true);
-  const [showChat, setShowChat] = useState(true);
+  const [showChat, setShowChat] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [theme, setTheme] = useState("light");
 
@@ -78,9 +78,8 @@ export default function App() {
     <>
     <div
       id="App"
-      className={`${smallSidebar ? "sidebar-small" : ""} ${
-        theme === "light" ? "theme--light" : "theme--dark"
-      }`}
+      className={`${smallSidebar ? "sidebar-small" : ""} 
+      ${ theme === "light" ? "theme--light" : "theme--dark"}`}
     >
       <div id="statusbar">
         <h3>ELO</h3>
@@ -91,7 +90,7 @@ export default function App() {
           smallSidebar={smallSidebar}
         />
       </div>
-      <div id="main" className={`${showChat ? "expand" : ""}`}>
+      <div id="main">
         <Routes>
           {routes.map((route, index) => (
             <Route
@@ -102,10 +101,9 @@ export default function App() {
             />
           ))}
         </Routes>
-      </div>
-      <div id="chat">
-        <Chat message={receivedMessage} connected={connectedMQTT} />
-      </div>
+      </div>    
+      <Chat message={receivedMessage} connected={connectedMQTT} />
+
     </div>
     
     <ToastContainer />

@@ -3,7 +3,7 @@ import "./Chat.scss";
 import { ReactSVG } from "react-svg";
 
 const Chat = ({ message, connected }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [messages, setMessages] = useState([]);
   const closeable = true;
 
@@ -17,6 +17,7 @@ const Chat = ({ message, connected }) => {
 
   return (
     <>
+      <div className={`chat__drop ${show ? "show" : ""}`} onClick={() => setShow(!show)}></div>
       <div className={`chat ${show ? "show" : ""}`}>
         <div className="chat__content">
           <h3 className="chat__header">Chat</h3>

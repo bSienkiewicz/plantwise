@@ -11,6 +11,7 @@
   z-index: 1000;
   justify-content: center;
   align-items: center;
+  color: $primary;
 
   & svg {
     animation: breathing 1s infinite;
