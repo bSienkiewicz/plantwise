@@ -6,7 +6,9 @@ import Chat from "./components/Chat/Chat";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Garden from "./pages/Garden/Garden";
 import Devices from "./pages/Devices/Devices";
-import AddDevice from "./pages/Devices/AddDevice/AddDevice";
+import AddDevice from "./pages/Devices/ManageDevice/ManageDevice";
+
+window.CORE_URL = "http://localhost:5000";
 
 import {
   connectedMQTT,
@@ -21,6 +23,8 @@ const routes = [
   { path: '/devices', element: <Devices /> },
   { path: '/devices/add', element: <AddDevice /> },
 ];
+
+
 
 export default function App() {
   const [receivedMessage, setReceivedMessage] = useState("");
@@ -71,7 +75,10 @@ export default function App() {
   };
 
   return (
-    <div id="App" className={`${smallSidebar ? "sidebar-small" : ""} ${theme == 'light' ? "theme--light" : "theme--dark"}`}>
+    <div id="App" className={`${smallSidebar ? "sidebar-small" : ""} ${theme === 'light' ? "theme--light" : "theme--dark"}`}>
+      <div id="statusbar">
+        <h3>ELO</h3>
+        </div>
       <div id="sidebar">
         <Sidebar
           setSmallSidebar={setSmallSidebar}
