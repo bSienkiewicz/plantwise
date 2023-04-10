@@ -7,6 +7,8 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Garden from "./pages/Garden/Garden";
 import Devices from "./pages/Devices/Devices";
 import AddDevice from "./pages/Devices/ManageDevice/ManageDevice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 window.CORE_URL = "http://localhost:5000";
 
@@ -18,13 +20,11 @@ import {
 } from "./utils/MQTT/MQTT_functions";
 
 const routes = [
-  { path: '/', element: <Dashboard /> },
-  { path: '/garden', element: <Garden /> },
-  { path: '/devices', element: <Devices /> },
-  { path: '/devices/add', element: <AddDevice /> },
+  { path: "/", element: <Dashboard /> },
+  { path: "/garden", element: <Garden /> },
+  { path: "/devices", element: <Devices /> },
+  { path: "/devices/add", element: <AddDevice /> },
 ];
-
-
 
 export default function App() {
   const [receivedMessage, setReceivedMessage] = useState("");
@@ -75,10 +75,16 @@ export default function App() {
   };
 
   return (
-    <div id="App" className={`${smallSidebar ? "sidebar-small" : ""} ${theme === 'light' ? "theme--light" : "theme--dark"}`}>
+    <>
+    <div
+      id="App"
+      className={`${smallSidebar ? "sidebar-small" : ""} ${
+        theme === "light" ? "theme--light" : "theme--dark"
+      }`}
+    >
       <div id="statusbar">
         <h3>ELO</h3>
-        </div>
+      </div>
       <div id="sidebar">
         <Sidebar
           setSmallSidebar={setSmallSidebar}
@@ -101,5 +107,8 @@ export default function App() {
         <Chat message={receivedMessage} connected={connectedMQTT} />
       </div>
     </div>
+    
+    <ToastContainer />
+    </>
   );
 }

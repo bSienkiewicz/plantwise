@@ -3,6 +3,7 @@ import Navbar from "../../../components/Navbar/Navbar";
 import "./ManageDevice.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function ManageDevice() {
   const deviceTypes = ["Measuring device", "Central control", "Peripheral"];
@@ -35,17 +36,25 @@ export default function ManageDevice() {
     };
 
     if (
-      deviceName === null || deviceName === "" ||
-      deviceMac === null || deviceMac === "" ||
-      deviceType === null || deviceType === "" ||
-      deviceID === null || deviceID === ""
+      deviceName === null ||
+      deviceName === "" ||
+      deviceMac === null ||
+      deviceMac === "" ||
+      deviceType === null ||
+      deviceType === "" ||
+      deviceID === null ||
+      deviceID === ""
     ) {
       return;
     }
 
     if (state) {
-      axios
-        .put(`${window.CORE_URL}/devices/${deviceID}`, device)
+      toast
+        .promise(axios.put(`${window.CORE_URL}/devices/${deviceID}`, device), {
+          pending: "Updating device...",
+          success: `${deviceName} updated!`,
+          error: "Error while updating device",
+        })
         .then((response) => {
           if (response.status === 200) {
             navigate("/devices");
@@ -55,8 +64,13 @@ export default function ManageDevice() {
           console.error(error);
         });
     } else {
+      toast.promise(
       axios
-        .post(`${window.CORE_URL}/devices`, device)
+        .post(`${window.CORE_URL}/devices`, device), {
+          pending: "Adding device...",
+          success: `${deviceName} added!`,
+          error: "Error while adding device",
+        })
         .then((response) => {
           if (response.status === 200) {
             navigate("/devices");
@@ -73,8 +87,13 @@ export default function ManageDevice() {
       "Are you sure you want to delete this device?"
     );
     if (!consent) return;
+    toast.promise(
     axios
-      .delete(`${window.CORE_URL}/devices/${deviceID}`)
+      .delete(`${window.CORE_URL}/devices/${deviceID}`), {
+        pending: "Deleting device...",
+        success: "Device deleted!",
+        error: "Error while deleting device",
+      })
       .then((response) => {
         if (response.status === 200) {
           navigate("/devices");
