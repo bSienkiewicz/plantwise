@@ -1,5 +1,6 @@
 import mqtt from 'mqtt';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 // const mqttUrl = 'mqtt://test.mosquitto.org';
 let client = null;
@@ -33,7 +34,8 @@ export function subscribeMQTT(topic, callback) {
       }
     });
 
-    client.on('message', (topic, message) => {
+    client.on('message', (topic, message, packet) => {
+      if (packet.retain) return;
       callback(topic, message.toString());
     });
   }

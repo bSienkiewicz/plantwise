@@ -15,15 +15,24 @@ const nav_buttons = [
   },
 ];
 
-export default function Devices() {
+export default function Devices({setNavbarData}) {
   const [devices, setDevices] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setNavbarData({
+      title: "Devices",
+      buttons: nav_buttons,
+    });
+  }, [setNavbarData]);
+
+  useEffect(() => {
+    let subscribed = true;
     axios
       .get(`${window.CORE_URL}/devices`)
       .then((response) => {
+        if (!subscribed) return;
         console.log(response.data);
         setDevices(response.data);
         setLoading(false);
@@ -33,6 +42,8 @@ export default function Devices() {
         setError(true);
         setLoading(false);
       });
+
+    return () => (subscribed = false);
   }, []);
 
   const renderDevices = (device, index) => {
@@ -78,7 +89,6 @@ export default function Devices() {
 
   return (
     <>
-      <Navbar title={"My devices"} preset={"devices"} buttons={nav_buttons} />
       <div className="devices">
         {loading && <Loader />}
         {error ? (

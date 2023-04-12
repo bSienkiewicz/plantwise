@@ -1,0 +1,33 @@
+@use 'variables' as *;
+
+.btn {
+    padding: 11px 15px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+  &-primary {
+    background-color: $primary;
+    color: $black;
+
+    &:hover {
+      background-color: $primary-dark;
+    }
+
+    &:disabled {
+      background: $gray-200;
+      color: $gray-400;
+    }
+  }
+
+  &-danger {
+    background-color: rgb(255, 140, 140);
+    color: $black;
+  }
+}

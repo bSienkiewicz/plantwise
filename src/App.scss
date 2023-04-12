@@ -1,4 +1,4 @@
-@import './styles/variables.scss';
+@use '/src/abstracts/' as *;
 
 $sidebar-small-width: 80px;
 $sidebar-width: 316px;
@@ -12,7 +12,8 @@ $chat-width: 330px;
     overflow: hidden;
     width: 100vw;
     height: 100vh;
-    background-color: $white;
+    color: $white;
+    background-color: $black;
 
     &.sidebar-small{
         grid-template-columns: $sidebar-small-width 1fr;
@@ -22,6 +23,8 @@ $chat-width: 330px;
     @include mq($sm){
         grid-template-rows: 60px 1fr;
         grid-template-columns: 1fr !important;
+        padding: 12px;
+        box-sizing: border-box;
     }
 }
 

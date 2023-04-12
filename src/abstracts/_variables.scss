@@ -15,16 +15,19 @@ $gray-300: #cfcfcf;
 $gray-400: #bfbfbf;
 $gray-500: #a9a9a9;
 $gray-600: #797979;
+$gray-700: #5a5a5a;
+$gray-725: #2a2a2a;
+$gray-750: #282828;
 $gray-800: #1a1a1a;
-$gray-800: #121212;
+$gray-850: #121212;
 $gray-900: #171717;
 $black: #000;
 
-$background: white;
-$text: black;
+$background: black;
+$text: white;
 $text-muted: $gray-600;
-$container-bg: $gray-100;
-$button-active: $gray-200;
+$container-bg: $gray-800;
+$button-active: $gray-725;
 
 $xs: 0;
 $sm: 576px;

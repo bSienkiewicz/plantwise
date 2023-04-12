@@ -5,17 +5,36 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { ReactSVG } from "react-svg";
 import Loader from "../../components/Loader/Loader";
+import { Link } from "react-router-dom";
 
-export default function Garden() {
+export default function Garden({setNavbarData}) {
   const [plants, setPlants] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
+
+  const nav_buttons = [
+    {
+      text: "Add plant",
+      icon: "/icons/add-icon.svg",
+      path: "/garden/add",
+    },
+  ];
+
   useEffect(() => {
+    setNavbarData({
+      title: "Garden",
+      buttons: nav_buttons,
+    });
+  }, []);
+  
+  useEffect(() => {
+    let subscribed = true;
     setLoading(true);
     axios
       .get(`${window.CORE_URL}/plants`)
       .then((res) => {
+        if (!subscribed) return;
         setPlants(res.data);
       })
       .catch((err) => {
@@ -26,16 +45,17 @@ export default function Garden() {
       .finally(() => {
         setLoading(false);
       });
+
+    return () => (subscribed = false);
   }, []);
 
   return (
     <>
-      <Navbar title={"My garden"} preset={"garden"} />
       <div className="garden">
         {loading && <Loader />}
         <div className="garden__cards">
           {plants.map((plant, index) => (
-            <div className={`garden__card`} key={plant.id} style={{
+            <Link to={`/garden/plant/${plant.slug}`} className={`garden__card`} key={plant.id} style={{
               animationDelay: `${index/10}s`
             }}>
               {plant.image_path && (
@@ -82,7 +102,7 @@ export default function Garden() {
                   <p className="garden__card__details__item__value">20°C</p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

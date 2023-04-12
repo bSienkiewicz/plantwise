@@ -1,13 +1,19 @@
-import React from 'react'
-import Navbar from '../../components/Navbar/Navbar'
+import {useContext, useEffect} from 'react'
 import './Dashboard.scss'
 
-const Dashboard = () => {
+const Dashboard = ({ setNavbarData }) => {
+
+  useEffect(() => {
+    setNavbarData({
+      title: 'Dashboard',
+      image: 'https://images.pexels.com/photos/533280/pexels-photo-533280.jpeg?cs=srgb&dl=pexels-pixabay-533280.jpg&fm=jpg',
+    })
+  }, [])
+
   return (
     <>
-    
-    <Navbar title="Dashboard" device="test-device-01" preset="dashboard" image="https://cdn.shopify.com/s/files/1/0257/4565/3811/articles/BONNIE_tomatoes_iStock-481349128-1800px_9f8f5390-a418-4d91-a3d0-00ae0b7900cb.jpg?v=1642541980" />
     <div className='dashboard'>Dashboard</div>
+    <button onClick={()=> setNavbarData({title:"ELOO"})}>XDD</button>
     </>
   )
 }

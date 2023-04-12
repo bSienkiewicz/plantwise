@@ -1,7 +1,7 @@
-@import '../../styles/variables.scss';
+@import '../../abstracts/variables.scss';
 
 .navbar {
-  background-color: $gray-100;
+  background-color: $container-bg;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -9,6 +9,7 @@
   border-radius: 8px;
   padding:12px;
   overflow: hidden;
+  transition: 0.8s ease all;
 
   @include mq($sm) {
     padding: 22px 12px;
@@ -77,7 +78,7 @@
 
   &__button{
     background-color: transparent;
-    color:$black;
+    color:$text;
     letter-spacing: 0.7px;
     border: none;
     border-radius: 5px;

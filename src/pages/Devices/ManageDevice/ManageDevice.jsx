@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function ManageDevice() {
+export default function ManageDevice({setNavbarData}) {
   const deviceTypes = ["Measuring device", "Central control", "Peripheral"];
   const [deviceName, setDeviceName] = useState("");
   const [deviceMac, setDeviceMac] = useState("");
@@ -13,6 +13,13 @@ export default function ManageDevice() {
   const [deviceID, setDeviceID] = useState("");
   let { state } = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setNavbarData({
+      title: state ? "Edit device" : "Add device",
+      bg_color: "#565656",
+    });
+  }, [setNavbarData]);
 
   useEffect(() => {
     if (state) {
@@ -35,16 +42,7 @@ export default function ManageDevice() {
       id: deviceID,
     };
 
-    if (
-      deviceName === null ||
-      deviceName === "" ||
-      deviceMac === null ||
-      deviceMac === "" ||
-      deviceType === null ||
-      deviceType === "" ||
-      deviceID === null ||
-      deviceID === ""
-    ) {
+    if (!deviceName || !deviceMac || !deviceType || !deviceID) {
       return;
     }
 
@@ -64,9 +62,8 @@ export default function ManageDevice() {
           console.error(error);
         });
     } else {
-      toast.promise(
-      axios
-        .post(`${window.CORE_URL}/devices`, device), {
+      toast
+        .promise(axios.post(`${window.CORE_URL}/devices`, device), {
           pending: "Adding device...",
           success: `${deviceName} added!`,
           error: "Error while adding device",
@@ -87,9 +84,8 @@ export default function ManageDevice() {
       "Are you sure you want to delete this device?"
     );
     if (!consent) return;
-    toast.promise(
-    axios
-      .delete(`${window.CORE_URL}/devices/${deviceID}`), {
+    toast
+      .promise(axios.delete(`${window.CORE_URL}/devices/${deviceID}`), {
         pending: "Deleting device...",
         success: "Device deleted!",
         error: "Error while deleting device",
@@ -106,81 +102,77 @@ export default function ManageDevice() {
 
   return (
     <>
-      <Navbar
-        title={state ? `Edit device` : "New device"}
-        bg_color={"#38B8B1"}
-        text_color={"white"}
-      />
       <div className="add_device">
-        <form className="add_device__body">
-          <h4 className="add_device__header">Device name</h4>
-          <input
-            className="add_device__input"
-            type="text"
-            placeholder="Enter device name"
-            required
-            max={30}
-            value={deviceName != null ? deviceName : ""}
-            onChange={(e) => setDeviceName(e.target.value)}
-          />
-          <h4 className="add_device__header">Type</h4>
-          <select
-            className="add_device__input"
-            onChange={(e) => handleChangeDeviceType(e)}
-          >
+        <p className="add_device__step"><span>1.</span>Choose device type</p>
+          <div className="add_device__type">
             {deviceTypes.map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
+              <button key={index} className={`add_device__type-item ${type === deviceType ? 'selected' : ''}`} onClick={() => setDeviceType(type)}>
+                <p>{type}</p>
+              </button>
             ))}
-          </select>
-
-          <div className="add_device__row">
-            <div className="">
-              <h4 className="add_device__header">Device MAC</h4>
-              <input
-                className="add_device__input"
-                type="text"
-                placeholder="Enter device MAC address"
-                required
-                {...(state && {
-                  value: state.device.mac_address,
-                  disabled: true,
-                })}
-                onChange={(e) => setDeviceMac(e.target.value)}
-              />
-            </div>
-            <div className="">
-              <h4 className="add_device__header">Device ID</h4>
-              <input
-                className="add_device__input"
-                type="text"
-                placeholder="Enter device unique ID"
-                required
-                {...(state && { value: state.device.id, disabled: true })}
-                onChange={(e) => setDeviceID(e.target.value)}
-              />
-            </div>
           </div>
-          <div className="add_device__buttons">
-            {state && (
+        <p className="add_device__step"><span>2.</span>Device setup</p>
+        <div className="add_device__body">
+          <div className="add_device__body-form">
+            <h4 className="add_device__header">Device name</h4>
+            <input
+              className="add_device__input"
+              type="text"
+              placeholder="Enter device name"
+              required
+              max={30}
+              value={deviceName != null ? deviceName : ""}
+              onChange={(e) => setDeviceName(e.target.value)}
+            />
+            
+            <h4 className="add_device__header">Device MAC</h4>
+            <input
+              className="add_device__input"
+              type="text"
+              placeholder="Enter device MAC address"
+              required
+              {...(state && {
+                value: state.device.mac_address,
+                disabled: true,
+              })}
+              onChange={(e) => setDeviceMac(e.target.value)}
+            />
+            <h4 className="add_device__header">Device ID</h4>
+            <input
+              className="add_device__input"
+              type="text"
+              placeholder="Enter device unique ID"
+              required
+              {...(state && { value: state.device.id, disabled: true })}
+              onChange={(e) => setDeviceID(e.target.value)}
+            />
+            <div className="add_device__buttons">
+              {state && (
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteDevice()}
+                >
+                  Delete device
+                </button>
+              )}
               <button
                 type="button"
-                className="add_device__button add_device__button--delete"
-                onClick={() => handleDeleteDevice()}
+                className="btn btn-primary"
+                onClick={() => handleAddDevice()}
               >
-                Delete device
+                {state ? "Edit device" : "Add new device"}
               </button>
-            )}
-            <button
-              type="button"
-              className="add_device__button"
-              onClick={() => handleAddDevice()}
-            >
-              {state ? "Edit device" : "Add new device"}
-            </button>
+            </div>
           </div>
-        </form>
+            <h5 className="add_device__info">
+              {state ? (
+                "This device was detected automatically when you connected it. You can now set its name, but MAC address and ID are bound to this device and cannot be changed."
+              ) : (
+                "If your device is not detected automatically, you can add it manually by entering its MAC address and ID. It's recommended to try automatic detection first."
+              )}
+            </h5>
+        </div>
       </div>
     </>
   );

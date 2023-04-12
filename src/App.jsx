@@ -1,14 +1,17 @@
 import "./App.scss";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, Link } from "react-router-dom";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Chat from "./components/Chat/Chat";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Garden from "./pages/Garden/Garden";
+import AddPlant from "./pages/Garden/AddPlant/AddPlant";
 import Devices from "./pages/Devices/Devices";
 import AddDevice from "./pages/Devices/ManageDevice/ManageDevice";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Navbar from "./components/Navbar/Navbar";
+export const NavbarContext = React.createContext();
 
 window.CORE_URL = "http://localhost:5000";
 
@@ -19,14 +22,10 @@ import {
   disconnectMQTT,
 } from "./utils/MQTT/MQTT_functions";
 
-const routes = [
-  { path: "/", element: <Dashboard /> },
-  { path: "/garden", element: <Garden /> },
-  { path: "/devices", element: <Devices /> },
-  { path: "/devices/add", element: <AddDevice /> },
-];
-
 export default function App() {
+  const [navbarData, setNavbarData] = useState({
+    title: "Dashboard",
+  });
   const [receivedMessage, setReceivedMessage] = useState("");
   const [client, setClient] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
@@ -36,13 +35,20 @@ export default function App() {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    connectMQTT("ws://broker.emqx.io/mqtt", {
-      clientId: "mqttjs_3233323232123",
-      port: 8083,
-      keepalive: 120,
-    })
+    toast
+      .promise(
+        connectMQTT("ws://broker.emqx.io/mqtt", {
+          clientId: "mqttjs_3233323232123",
+          port: 8083,
+          keepalive: 120,
+        }),
+        {
+          pending: "Connecting to MQTT broker...",
+          error: "Error while connecting to MQTT broker",
+        }
+      )
       .then(() => {
-        subscribeMQTT("device/led", handleReceived);
+        subscribeMQTT("plantwise/device/msg", handleReceived);
       })
       .catch((err) => {
         console.error(err);
@@ -74,39 +80,53 @@ export default function App() {
     setReceivedMessage(message);
   };
 
+  function updateNavbarData(newData){
+    setNavbarData(newData);
+  };
+
+  const routes = [
+    { path: "/", element: <Dashboard setNavbarData={setNavbarData}/> },
+    { path: "/garden", element: <Garden setNavbarData={setNavbarData}/> },
+    { path: "/garden/add", element: <AddPlant setNavbarData={setNavbarData} /> },
+    { path: "/devices", element: <Devices setNavbarData={setNavbarData} /> },
+    { path: "/devices/add", element: <AddDevice setNavbarData={setNavbarData} /> },
+  ];
+
   return (
     <>
-    <div
-      id="App"
-      className={`${smallSidebar ? "sidebar-small" : ""} 
-      ${ theme === "light" ? "theme--light" : "theme--dark"}`}
-    >
-      <div id="statusbar">
-        <h3>ELO</h3>
+      <div
+        id="App"
+        className={`${smallSidebar ? "sidebar-small" : ""} 
+      ${theme === "light" ? "theme--light" : "theme--dark"}`}
+      >
+        <div id="statusbar">
+          <h3>ELO</h3>
+        </div>
+        <div id="sidebar">
+          <Sidebar
+            setSmallSidebar={setSmallSidebar}
+            smallSidebar={smallSidebar}
+          />
+        </div>
+        <NavbarContext.Provider value={navbarData}>
+          <div id="main">
+            <Navbar />
+            <Routes>
+              {routes.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={route.element}
+                  component={route.component}
+                />
+              ))}
+            </Routes>
+          </div>
+        </NavbarContext.Provider>
+        <Chat message={receivedMessage} connected={connectedMQTT} />
       </div>
-      <div id="sidebar">
-        <Sidebar
-          setSmallSidebar={setSmallSidebar}
-          smallSidebar={smallSidebar}
-        />
-      </div>
-      <div id="main">
-        <Routes>
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              element={route.element}
-              component={route.component}
-            />
-          ))}
-        </Routes>
-      </div>    
-      <Chat message={receivedMessage} connected={connectedMQTT} />
 
-    </div>
-    
-    <ToastContainer />
+      <ToastContainer theme="dark" />
     </>
   );
 }

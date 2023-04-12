@@ -1,9 +1,9 @@
-@import '../../styles/variables.scss';
+@import '../../abstracts/variables.scss';
 
 $font-size: 16px;
 
 .sidebar {
-  background-color: $gray-100;
+  background-color: $container-bg;
   height: 100%;
   width: 100%;
   position: relative;
@@ -109,11 +109,11 @@ $font-size: 16px;
   &__toggle {
     position: absolute;
     top: 0px;
-    left: 0px;
+    right: 0px;
     cursor: pointer;
     z-index: 100;
     background: $primary;
-    color:white;
+    color:$black;
     border-radius: 8px;
     width: 25px;
     height: 25px;

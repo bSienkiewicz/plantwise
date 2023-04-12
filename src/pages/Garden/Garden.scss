@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@import '../../abstracts/variables.scss';
 
 .garden{
     width: 100%;
@@ -10,7 +10,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
-    background-color: $gray-100;
+    background-color: $container-bg;
     border-radius: 8px;
 
     &__cards{
@@ -22,9 +22,10 @@
     &__card{
         display: flex;
         opacity: 0;
+        text-decoration: none;
         width: 100%;
         height: 212px;
-        background-color: $gray-200;
+        background-color: $gray-800;
         border-radius: 6px;
         margin-bottom: 25px;
         position: relative;
@@ -59,6 +60,7 @@
         @include mq($lg){
             flex-direction: column;
             height: 100%;
+            padding: 10px;
         }
 
         &__presentation{
@@ -76,13 +78,13 @@
         &__image{
             max-height: 100%;
             aspect-ratio: 1/1;
-            background-color: $gray-300;
+            background-color: $gray-750;
             object-fit: cover;
             border-radius: 6px;
             margin-right: 25px;
 
             &--placeholder{
-                background-color: $gray-300;
+                background-color: $gray-750;
                 color: $gray-500;
                 border-radius: 6px;
                 height: 100%;
@@ -118,6 +120,9 @@
                 color: $white;
                 margin: 0;
 
+                @include mq($lg){
+                    font-size: 16px;
+                }
             }
 
             &__description{
@@ -168,10 +173,12 @@
                     font-weight: 600;
                     color: $white;
                     margin: 0;
+
+                    @include mq($lg){
+                        font-size: 16px;
+                    }
                 }
             }
         }
     }
-
-    
 }

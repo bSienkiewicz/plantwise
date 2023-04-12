@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import "./Navbar.scss";
+import { NavbarContext } from "../../App";
 import { ReactSVG } from "react-svg";
 import { Link } from "react-router-dom";
 
-const Navbar = ({ title, device, buttons, image, bg_color, text_color }) => {
+const Navbar = () => {
+  const { title, device, buttons, image, bg_color, text_color } = useContext(NavbarContext);
+
   const container_style = {};
   const text_style = {};
   if (image) container_style.backgroundImage = `url(${image})`;
