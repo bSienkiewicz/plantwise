@@ -91,7 +91,7 @@ export default function AddPlant({ setNavbarData }) {
 
   return (
     <>
-      <div className="add_plant">
+      <div className="add_plant box">
         {loading && <Loader />}
         <div className="add_plant__header">
           {image ? (

@@ -1,4 +1,4 @@
-@import '../../abstracts/variables.scss';
+@use '/src/abstracts/' as *;
 
 .navbar {
   background-color: $container-bg;

@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const container_style = {};
   const text_style = {};
-  if (image) container_style.backgroundImage = `url(${image})`;
+  if (image) container_style.background = `url(${image}) no-repeat center/cover fixed`;
   if (bg_color) container_style.backgroundColor = bg_color;
   if (text_color) text_style.color = text_color;
 

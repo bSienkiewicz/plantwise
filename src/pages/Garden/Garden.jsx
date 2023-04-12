@@ -51,7 +51,7 @@ export default function Garden({setNavbarData}) {
 
   return (
     <>
-      <div className="garden">
+      <div className="garden box">
         {loading && <Loader />}
         <div className="garden__cards">
           {plants.map((plant, index) => (

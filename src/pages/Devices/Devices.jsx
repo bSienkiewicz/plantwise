@@ -89,7 +89,7 @@ export default function Devices({setNavbarData}) {
 
   return (
     <>
-      <div className="devices">
+      <div className="devices box">
         {loading && <Loader />}
         {error ? (
           <h3 className="devices__error">

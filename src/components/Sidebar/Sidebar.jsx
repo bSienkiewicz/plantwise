@@ -60,7 +60,7 @@ const Sidebar = ({
             src={
               smallSidebar
                 ? "/logo-small-leaf-rot.svg"
-                : "/logo-wide-modern-black.svg"
+                : "/logo-wide-modern-white.svg"
             }
             className={
               smallSidebar ? "sidebar__logo--small" : "sidebar__logo--wide"

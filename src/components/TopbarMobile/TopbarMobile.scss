@@ -1,4 +1,4 @@
-@import "../../abstracts/variables.scss";
+@use '/src/abstracts/' as *;
 
 .topbar_mobile {
   height: 60px;

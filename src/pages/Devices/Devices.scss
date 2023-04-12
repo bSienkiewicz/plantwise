@@ -1,114 +1,99 @@
-@import '../../abstracts/variables.scss';
+@use "/src/abstracts/" as *;
 
-.devices{
+.devices {
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+    box-sizing: border-box;
+
+    a {
+      text-decoration: none;
+      color: $text;
+    }
+  }
+
+  &__card {
+    display: grid;
+    grid-template-columns: 1fr 50px;
     width: 100%;
-    max-height: 100%;
+    max-height: 350px;
+    background-color: $button-active;
+    border-radius: 6px;
+    padding: 18px;
+    box-sizing: border-box;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    &--unconfigured {
+      background: transparent;
+      border: 1px solid $primary;
+    }
+
+    &__header {
+      margin: 0;
+      white-space: nowrap; /* prevent line breaks */
+      overflow: hidden; /* hide the overflow */
+      text-overflow: ellipsis; /* add the ellipsis */
+      &--unconfigured {
+        color: $primary;
+      }
+    }
+
+    &__content {
+      margin: 0;
+      font-size: 12px;
+    }
+
+    &__container {
+      max-width: 100%;
+      overflow: hidden;
+      color: $gray-600;
+
+      h3 {
+        color: $text;
+      }
+    }
+
+    &__button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__error {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    padding:12px;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
-    background-color: $container-bg;
+    background-color: $gray-100;
     border-radius: 8px;
 
-    &__cards{
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 12px;
-        padding: 12px;
-        box-sizing: border-box;
-
-        a{
-            text-decoration: none;
-            color: $text;
-        }
+    &__icon {
+      font-size: 50px;
+      color: $gray-600;
     }
 
-    &__card{
-        display: grid;
-        grid-template-columns: 1fr 50px;
-        width: 100%;
-        max-height: 350px;
-        background-color: $button-active;
-        border-radius: 6px;
-        padding: 18px;
-        box-sizing: border-box;
-        opacity: 0;
-        animation: fadeIn 0.5s ease-in-out forwards;
-        @keyframes fadeIn {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-        &--unconfigured{
-            background: transparent;
-            border: 1px solid $primary;
-        }
-
-        &__header{
-            margin: 0;
-            white-space: nowrap; /* prevent line breaks */
-            overflow: hidden; /* hide the overflow */
-            text-overflow: ellipsis; /* add the ellipsis */
-            &--unconfigured{
-                color: $primary;
-            }
-        }
-
-        &__content{
-            margin: 0;
-            font-size: 12px;
-        }
-
-        &__container{
-            max-width: 100%;
-            overflow: hidden;
-            color: $gray-600;
-
-            h3{
-                color:$text;
-            }
-        }
-
-        &__button{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        
+    &__text {
+      margin: 0;
+      color: $gray-600;
     }
-
-    &__error{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 12px;
-        box-sizing: border-box;
-        overflow-y: auto;
-        overflow-x: hidden;
-        position: relative;
-        background-color: $gray-100;
-        border-radius: 8px;
-
-        &__icon{
-            font-size: 50px;
-            color: $gray-600;
-        }
-
-        &__text{
-            margin: 0;
-            color: $gray-600;
-        }
-    }
+  }
 }

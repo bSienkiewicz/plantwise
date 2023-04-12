@@ -1,20 +1,9 @@
-@import "../../../abstracts/variables.scss";
+@use "/src/abstracts/" as *;
 
 .add_device {
-  width: 100%;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 12px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
-  background-color: $container-bg;
-  border-radius: 8px;
 
   &__body {
-z-index: 2;
+    z-index: 2;
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
@@ -31,14 +20,12 @@ z-index: 2;
       box-sizing: border-box;
       border-radius: 6px;
     }
-
   }
 
-  &__info{
+  &__info {
     margin: 0;
     color: $gray-600;
   }
-  
 
   &__type {
     display: grid;
@@ -63,22 +50,22 @@ z-index: 2;
       &.selected {
         border: 1px solid $primary;
         background-color: $primary;
-        color:$black;
+        color: $black;
       }
     }
   }
 
-  &__step{
-    display:flex;
+  &__step {
+    display: flex;
     gap: 10px;
     background-color: $button-active;
     border-radius: 6px;
-    span{
-        border: 1px solid $primary;
-        min-width: 25px;
-        aspect-ratio: 1/1;
-        display:flex;
-        justify-content: center;
+    span {
+      border: 1px solid $primary;
+      min-width: 25px;
+      aspect-ratio: 1/1;
+      display: flex;
+      justify-content: center;
     }
   }
 
@@ -124,6 +111,6 @@ z-index: 2;
     margin-top: 20px;
   }
 
-  &__header{
+  &__header {
   }
 }

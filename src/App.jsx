@@ -21,6 +21,7 @@ import {
   subscribeMQTT,
   disconnectMQTT,
 } from "./utils/MQTT/MQTT_functions";
+import Plant from "./pages/Garden/Plant/Plant";
 
 export default function App() {
   const [navbarData, setNavbarData] = useState({
@@ -88,6 +89,7 @@ export default function App() {
     { path: "/", element: <Dashboard setNavbarData={setNavbarData}/> },
     { path: "/garden", element: <Garden setNavbarData={setNavbarData}/> },
     { path: "/garden/add", element: <AddPlant setNavbarData={setNavbarData} /> },
+    { path: "/plant/:id", element: <Plant setNavbarData={setNavbarData} /> },
     { path: "/devices", element: <Devices setNavbarData={setNavbarData} /> },
     { path: "/devices/add", element: <AddDevice setNavbarData={setNavbarData} /> },
   ];

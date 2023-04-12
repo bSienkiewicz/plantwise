@@ -102,7 +102,7 @@ export default function ManageDevice({setNavbarData}) {
 
   return (
     <>
-      <div className="add_device">
+      <div className="add_device box">
         <p className="add_device__step"><span>1.</span>Choose device type</p>
           <div className="add_device__type">
             {deviceTypes.map((type, index) => (
