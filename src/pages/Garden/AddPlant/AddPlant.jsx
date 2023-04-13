@@ -7,18 +7,24 @@ import { toast } from "react-toastify";
 import Loader from "../../../components/Loader/Loader";
 import slugify from "slugify";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function AddPlant({ setNavbarData }) {
+  useEffect(() => {
+    setNavbarData({
+      title: "Add plant",
+      bg_color: "#565656",
+    });
+  }, [setNavbarData]);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [plantDevice, setPlantDevice] = useState(null);
-  const [devices, setDevices] = useState([]);
-  const [requestedDevices, setRequestedDevices] = useState([]);
-  const [requestedPlants, setRequestedPlants] = useState([]);
+  const [plantSelectedDevice, setPlantSelectedDevice] = useState(null);
+  const [filteredDevices, setFilteredDevices] = useState([]);
   const [settings, setSettings] = useState({
     moisture: {
       min_value: 30,
@@ -32,57 +38,52 @@ export default function AddPlant({ setNavbarData }) {
   const imgTimeoutRef = useRef(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setNavbarData({
-      title: "Add plant",
-      bg_color: "#565656",
-    });
-  }, [setNavbarData]);
+  const devices = useSelector((state) => state.devices.devices);
+  const plants = useSelector((state) => state.plants.plants);
+  const plantsLoading = useSelector((state) => state.plants.loading);
+  const devicesLoading = useSelector((state) => state.devices.loading);
+  const plantsError = useSelector((state) => state.plants.error)
+  const devicesError = useSelector((state) => state.devices.error)
+
 
   useEffect(() => {
-    let subscribed = true;
-    setLoading(true);
-    axios
-      .all([
-        axios.get(`${window.CORE_URL}/devices`),
-        axios.get(`${window.CORE_URL}/plants`),
-      ])
-      .then(
-        axios.spread((devicesResponse, plantsResponse) => {
-          if (!subscribed) return;
-          setRequestedDevices(devicesResponse.data);
-          setRequestedPlants(plantsResponse.data);
-        })
-      ).then(() => {
-        setLoading(false);
-      })
-      .catch((error) => {
-        toast.error("There was an error while loading your garden.");
-      })
-    return () => (subscribed = false);
-  }, []);
-
-  useEffect(() => {
-    if (requestedDevices.length > 0) {
+    if (devices) {
       // return only devices that have .configured = true
-      const configuredDevices = requestedDevices.filter((device) => {
+      const configuredDevices = devices.filter((device) => {
         return device.configured && device.type === "Measuring device";
       });
       // return only devices that are not in plants
       const filteredDevices = configuredDevices.filter((device) => {
-        const isInPlant = requestedPlants.some(
+        const isInPlant = plants.some(
           (plant) => plant.device.id === device.id
         );
         return !isInPlant;
       });
-      setDevices(filteredDevices);
-      setPlantDevice(devices[0]);
+      setFilteredDevices(filteredDevices);
+      setPlantSelectedDevice(filteredDevices[0]);
     }
-  }, [requestedDevices]);
+  }, [devices]);
 
   useEffect(() => {
-    setName(`Plant #${requestedPlants.length + 1}`);
-  }, [requestedPlants]);
+    if(plants){
+      setName(`Plant ${plants.length + 1}`);
+    }
+  }, [filteredDevices]);
+
+  useEffect(() => {
+    if (plantsError || devicesError) {
+      toast.error("Error while loading devices or plants");
+    }
+  }, [plantsError, devicesError]);
+
+  useEffect(() => {
+    if (plantsLoading || devicesLoading) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [plantsLoading, devicesLoading]);
+
 
   const handleImageChange = (e) => {
     if (imgTimeoutRef.current) {
@@ -99,7 +100,7 @@ export default function AddPlant({ setNavbarData }) {
       remove: /[*+~.()'"!:@#]/g,
       lower: true,
     });
-    const isSlugTaken = requestedPlants.some((plant) => plant.slug === slug);
+    const isSlugTaken = plants.some((plant) => plant.slug === slug);
     setError(isSlugTaken);
     setName(e.target.value);
     setSlug(slug);
@@ -115,7 +116,7 @@ export default function AddPlant({ setNavbarData }) {
       slug: slug,
       image_path: image,
       description: description,
-      device: plantDevice,
+      device: plantSelectedDevice,
       moisture_min: settings.moisture.min_value,
       moisture_max: settings.moisture.max_value,
       temperature_min: settings.temperature.min_value,
@@ -168,15 +169,15 @@ export default function AddPlant({ setNavbarData }) {
           </div>
           <div className="row">
             <div className="input-group">
-              <p>Picture url</p>
+              <p>Image url</p>
               <input type="text" onChange={(e) => handleImageChange(e)} />
             </div>
             <div className="add_plant__devices">
               <div className="input-group">
                 <p>Choose a device</p>
                 <div className="add_plant__devices__list">
-                  <select className="add_plant__devices__list__item" onChange={(e) => setPlantDevice(e.target.value)}>
-                    {devices.map((device) => (
+                  <select className="add_plant__devices__list__item" onChange={(e) => setPlantSelectedDevice(e.target.value)}>
+                    {filteredDevices.map((device) => (
                       <option key={device.id} value={device.id}>{device.name} [{device.id}]</option>
                     ))}
                   </select>

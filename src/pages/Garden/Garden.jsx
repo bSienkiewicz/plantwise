@@ -6,12 +6,12 @@ import axios from "axios";
 import { ReactSVG } from "react-svg";
 import Loader from "../../components/Loader/Loader";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Garden({setNavbarData}) {
-  const [plants, setPlants] = useState([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-
+  const plants = useSelector(state => state.plants.plants)
+  const plantsLoading = useSelector(state => state.plants.loading)
+  const plantsError = useSelector(state => state.plants.error)
 
   const navButtons = [
     {
@@ -27,33 +27,16 @@ export default function Garden({setNavbarData}) {
       buttons: navButtons,
     });
   }, []);
-  
-  useEffect(() => {
-    let subscribed = true;
-    setLoading(true);
-    axios
-      .get(`${window.CORE_URL}/plants`)
-      .then((res) => {
-        if (!subscribed) return;
-        setPlants(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("There was an error while loading your garden.");
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
 
-    return () => (subscribed = false);
-  }, []);
+  useEffect(() => {
+    console.log(plants)
+  }, [plants])
 
   return (
     <Fragment>
       <div className="garden" >
-        {loading && <Loader />}
-        {plants.length === 0 && !loading && (
+        {plantsLoading && <Loader />}
+        {!plants &&  (
             <div className="garden__empty">
               <img src="/src/assets/meditate.png" alt="Empty garden" className="garden__empty__icon" />
               <h2 className="garden__empty__title">
@@ -64,6 +47,7 @@ export default function Garden({setNavbarData}) {
               </Link>
             </div>
           )}
+        {plants &&  (
         <div className="garden__cards">
           {plants.map((plant, index) => (
             <Link to={`/plant/${plant.slug}`} className={`garden__card`} key={plant.id} style={{
@@ -116,6 +100,7 @@ export default function Garden({setNavbarData}) {
             </Link>
           ))}
         </div>
+        )}
       </div>
     </Fragment>
   );

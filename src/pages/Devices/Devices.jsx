@@ -7,6 +7,9 @@ import { ReactSVG } from "react-svg";
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
 
+import {useSelector, useDispatch} from 'react-redux'
+import {increment, decrement} from '../../store/counter/counter'
+
 const navButtons = [
   {
     icon: "/icons/add-icon.svg",
@@ -16,9 +19,10 @@ const navButtons = [
 ];
 
 export default function Devices({setNavbarData}) {
-  const [devices, setDevices] = useState([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const devices = useSelector(state => state.devices.devices)
+  const devicesLoading = useSelector(state => state.devices.loading)
+  const devicesError = useSelector(state => state.devices.error)
+
 
   useEffect(() => {
     setNavbarData({
@@ -26,24 +30,7 @@ export default function Devices({setNavbarData}) {
       buttons: navButtons,
     });
   }, [setNavbarData]);
-
-  useEffect(() => {
-    let subscribed = true;
-    axios
-      .get(`${window.CORE_URL}/devices`)
-      .then((response) => {
-        if (!subscribed) return
-        setDevices(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(true);
-        setLoading(false);
-      });
-
-    return () => (subscribed = false);
-  }, []);
+  
 
   const renderDevices = (device, index) => {
     const { name, configured, mac_address, id, type, last_connected } = device;
@@ -89,8 +76,8 @@ export default function Devices({setNavbarData}) {
   return (
     <Fragment>
       <div className="devices" >
-        {loading && <Loader />}
-        {error ? (
+        {devicesLoading && <Loader />}
+        {devicesError ? (
           <h3 className="devices__error">
             There was an error while loading devices.
           </h3>

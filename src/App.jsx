@@ -2,6 +2,10 @@ import "./App.scss";
 import React, { Fragment, useEffect, useState } from "react";
 import { Route, Routes, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { fetchDevices } from "./store/devices/devices";
+import { fetchPlants } from "./store/plants/plants";
+
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -33,8 +37,9 @@ export default function App() {
   const [smallSidebar, setSmallSidebar] = useState(true);
   const [showChat, setShowChat] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [theme, setTheme] = useState("light");
+  const dispatch = useDispatch();
 
+  // MQTT connection and subscription
   useEffect(() => {
     toast
       .promise(
@@ -44,7 +49,6 @@ export default function App() {
           keepalive: 120,
         }),
         {
-          pending: "Connecting to MQTT broker...",
           error: "Error while connecting to MQTT broker",
         }
       )
@@ -61,6 +65,7 @@ export default function App() {
     };
   }, []);
 
+  // Window resize event listener
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
@@ -81,21 +86,35 @@ export default function App() {
     setReceivedMessage(message);
   };
 
+  // State download
+  useEffect(() => {
+    Promise.all([dispatch(fetchDevices()), dispatch(fetchPlants())]).then(
+      () => {
+        toast.promise(Promise.resolve(), {
+          error: "Error while loading data",
+        });
+      }
+    );
+  }, [dispatch]);
+
   const routes = [
-    { path: "/", element: <Dashboard setNavbarData={setNavbarData}/> },
-    { path: "/garden", element: <Garden setNavbarData={setNavbarData}/> },
-    { path: "/garden/add", element: <AddPlant setNavbarData={setNavbarData} /> },
+    { path: "/", element: <Dashboard setNavbarData={setNavbarData} /> },
+    { path: "/garden", element: <Garden setNavbarData={setNavbarData} /> },
+    {
+      path: "/garden/add",
+      element: <AddPlant setNavbarData={setNavbarData} />,
+    },
     { path: "/plant/:id", element: <Plant setNavbarData={setNavbarData} /> },
     { path: "/devices", element: <Devices setNavbarData={setNavbarData} /> },
-    { path: "/devices/add", element: <AddDevice setNavbarData={setNavbarData} /> },
+    {
+      path: "/devices/add",
+      element: <AddDevice setNavbarData={setNavbarData} />,
+    },
   ];
 
   return (
     <Fragment>
-      <div
-        id="App"
-        className={`${smallSidebar ? "sidebar-small" : ""}`}
-      >
+      <div id="App" className={`${smallSidebar ? "sidebar-small" : ""}`}>
         <div id="statusbar">
           <h3>ELO</h3>
         </div>
@@ -109,16 +128,16 @@ export default function App() {
           <div id="main">
             <Navbar />
             <div id="content">
-            <Routes>
-              {routes.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={route.element}
-                  component={route.component}
-                />
-              ))}
-            </Routes>
+              <Routes>
+                {routes.map((route, index) => (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={route.element}
+                    component={route.component}
+                  />
+                ))}
+              </Routes>
             </div>
           </div>
         </NavbarContext.Provider>
