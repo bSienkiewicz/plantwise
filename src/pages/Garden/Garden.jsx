@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import "./Garden.scss";
 import { toast } from "react-toastify";
@@ -13,7 +13,7 @@ export default function Garden({setNavbarData}) {
   const [loading, setLoading] = useState(true);
 
 
-  const nav_buttons = [
+  const navButtons = [
     {
       text: "Add plant",
       icon: "/icons/add-icon.svg",
@@ -24,7 +24,7 @@ export default function Garden({setNavbarData}) {
   useEffect(() => {
     setNavbarData({
       title: "Garden",
-      buttons: nav_buttons,
+      buttons: navButtons,
     });
   }, []);
   
@@ -50,8 +50,8 @@ export default function Garden({setNavbarData}) {
   }, []);
 
   return (
-    <>
-      <div className="garden box">
+    <Fragment>
+      <div className="garden" >
         {loading && <Loader />}
         {plants.length === 0 && !loading && (
             <div className="garden__empty">
@@ -117,6 +117,6 @@ export default function Garden({setNavbarData}) {
           ))}
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }

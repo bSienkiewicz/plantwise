@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import "./AddPlant.scss";
 import { ReactSVG } from "react-svg";
@@ -138,8 +138,8 @@ export default function AddPlant({ setNavbarData }) {
 
 
   return (
-    <>
-      <div className="add_plant box">
+    <Fragment>
+      <div className="add_plant" >
         {loading && <Loader />}
         <div className="add_plant__header">
           {image ? (
@@ -265,6 +265,6 @@ export default function AddPlant({ setNavbarData }) {
           <button className="btn btn-primary" onClick={() => handleAddPlant()}>Add new plant</button>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }

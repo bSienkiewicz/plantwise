@@ -1,6 +1,9 @@
 import "./App.scss";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Route, Routes, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Chat from "./components/Chat/Chat";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -8,20 +11,17 @@ import Garden from "./pages/Garden/Garden";
 import AddPlant from "./pages/Garden/AddPlant/AddPlant";
 import Devices from "./pages/Devices/Devices";
 import AddDevice from "./pages/Devices/ManageDevice/ManageDevice";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Navbar from "./components/Navbar/Navbar";
-export const NavbarContext = React.createContext();
-
-window.CORE_URL = "http://localhost:5000";
-
+import Plant from "./pages/Garden/Plant/Plant";
 import {
   connectedMQTT,
   connectMQTT,
   subscribeMQTT,
   disconnectMQTT,
 } from "./utils/MQTT/MQTT_functions";
-import Plant from "./pages/Garden/Plant/Plant";
+
+export const NavbarContext = React.createContext();
+
+window.CORE_URL = "http://localhost:5000";
 
 export default function App() {
   const [navbarData, setNavbarData] = useState({
@@ -91,11 +91,10 @@ export default function App() {
   ];
 
   return (
-    <>
+    <Fragment>
       <div
         id="App"
-        className={`${smallSidebar ? "sidebar-small" : ""} 
-      ${theme === "light" ? "theme--light" : "theme--dark"}`}
+        className={`${smallSidebar ? "sidebar-small" : ""}`}
       >
         <div id="statusbar">
           <h3>ELO</h3>
@@ -127,6 +126,6 @@ export default function App() {
       </div>
 
       <ToastContainer theme="dark" />
-    </>
+    </Fragment>
   );
 }

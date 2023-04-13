@@ -1,19 +1,18 @@
-import {useContext, useEffect} from 'react'
-import './Dashboard.scss'
+import { Fragment, useContext, useEffect } from "react";
+import "./Dashboard.scss";
 
 const Dashboard = ({ setNavbarData }) => {
-
   useEffect(() => {
     setNavbarData({
-      title: 'Dashboard',
-    })
-  }, [])
+      title: "Dashboard",
+    });
+  }, []);
 
   return (
-    <>
-    <div className='dashboard'>Dashboard</div>
-    </>
-  )
-}
+    <Fragment>
+      <div className="dashboard">Dashboard</div>
+    </Fragment>
+  );
+};
 
-export default Dashboard
+export default Dashboard;

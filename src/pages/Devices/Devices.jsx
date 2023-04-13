@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Loader from "../../components/Loader/Loader";
 import "./Devices.scss";
@@ -7,7 +7,7 @@ import { ReactSVG } from "react-svg";
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
 
-const nav_buttons = [
+const navButtons = [
   {
     icon: "/icons/add-icon.svg",
     text: "Add new device",
@@ -23,7 +23,7 @@ export default function Devices({setNavbarData}) {
   useEffect(() => {
     setNavbarData({
       title: "Devices",
-      buttons: nav_buttons,
+      buttons: navButtons,
     });
   }, [setNavbarData]);
 
@@ -32,8 +32,7 @@ export default function Devices({setNavbarData}) {
     axios
       .get(`${window.CORE_URL}/devices`)
       .then((response) => {
-        if (!subscribed) return;
-        console.log(response.data);
+        if (!subscribed) return
         setDevices(response.data);
         setLoading(false);
       })
@@ -88,8 +87,8 @@ export default function Devices({setNavbarData}) {
   };
 
   return (
-    <>
-      <div className="devices box">
+    <Fragment>
+      <div className="devices" >
         {loading && <Loader />}
         {error ? (
           <h3 className="devices__error">
@@ -99,6 +98,6 @@ export default function Devices({setNavbarData}) {
           <div className="devices__cards">{devices.map(renderDevices)}</div>
         )}
       </div>
-    </>
+    </Fragment>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "./Chat.scss";
 import { ReactSVG } from "react-svg";
 
@@ -16,7 +16,7 @@ const Chat = ({ message, connected }) => {
 
 
   return (
-    <>
+    <Fragment>
       <div className={`chat__drop ${show ? "show" : ""}`} onClick={() => setShow(!show)}></div>
       <div className={`chat ${show ? "show" : ""}`}>
         <div className="chat__content">
@@ -33,7 +33,7 @@ const Chat = ({ message, connected }) => {
           </div>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 };
 

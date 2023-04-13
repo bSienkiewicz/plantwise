@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import "./Sidebar.scss";
 
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 
 const Sidebar = ({
   setSmallSidebar,
@@ -39,7 +39,7 @@ const Sidebar = ({
   ];
 
   return (
-    <>
+    <Fragment>
       <div className={`sidebar ${smallSidebar ? "sidebar--small" : ""}`}>
         {!isMobile && (
           <div
@@ -111,7 +111,7 @@ const Sidebar = ({
           </li>
         </ul>
       </div>
-    </>
+    </Fragment>
   );
 };
 

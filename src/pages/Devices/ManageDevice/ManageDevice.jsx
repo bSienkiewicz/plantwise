@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import "./ManageDevice.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function ManageDevice({setNavbarData}) {
+export default function ManageDevice({ setNavbarData }) {
   const deviceTypes = ["Measuring device", "Central control", "Peripheral"];
   const [deviceName, setDeviceName] = useState("");
   const [deviceMac, setDeviceMac] = useState("");
@@ -101,17 +101,27 @@ export default function ManageDevice({setNavbarData}) {
   };
 
   return (
-    <>
-      <div className="add_device box">
-        <p className="add_device__step"><span>1.</span>Choose device type</p>
-          <div className="add_device__type">
-            {deviceTypes.map((type, index) => (
-              <button key={index} className={`add_device__type-item ${type === deviceType ? 'selected' : ''}`} onClick={() => setDeviceType(type)}>
-                <p>{type}</p>
-              </button>
-            ))}
-          </div>
-        <p className="add_device__step"><span>2.</span>Device setup</p>
+    <Fragment>
+      <div className="add_device">
+        <p className="add_device__step">
+          <span>1.</span>Choose device type
+        </p>
+        <div className="add_device__type">
+          {deviceTypes.map((type, index) => (
+            <button
+              key={index}
+              className={`add_device__type-item ${
+                type === deviceType ? "selected" : ""
+              }`}
+              onClick={() => setDeviceType(type)}
+            >
+              <p>{type}</p>
+            </button>
+          ))}
+        </div>
+        <p className="add_device__step">
+          <span>2.</span>Device setup
+        </p>
         <div className="add_device__body">
           <div className="add_device__body-form">
             <h4 className="add_device__header">Device name</h4>
@@ -124,7 +134,7 @@ export default function ManageDevice({setNavbarData}) {
               value={deviceName != null ? deviceName : ""}
               onChange={(e) => setDeviceName(e.target.value)}
             />
-            
+
             <h4 className="add_device__header">Device MAC</h4>
             <input
               className="add_device__input"
@@ -165,15 +175,13 @@ export default function ManageDevice({setNavbarData}) {
               </button>
             </div>
           </div>
-            <h5 className="add_device__info">
-              {state ? (
-                "This device was detected automatically when you connected it. You can now set its name, but MAC address and ID are bound to this device and cannot be changed."
-              ) : (
-                "If your device is not detected automatically, you can add it manually by entering its MAC address and ID. It's recommended to try automatic detection first."
-              )}
-            </h5>
+          <h5 className="add_device__info">
+            {state
+              ? "This device was detected automatically when you connected it. You can now set its name, but MAC address and ID are bound to this device and cannot be changed."
+              : "If your device is not detected automatically, you can add it manually by entering its MAC address and ID. It's recommended to try automatic detection first."}
+          </h5>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }
