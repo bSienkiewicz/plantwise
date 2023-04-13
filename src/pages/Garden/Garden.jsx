@@ -53,9 +53,20 @@ export default function Garden({setNavbarData}) {
     <>
       <div className="garden box">
         {loading && <Loader />}
+        {plants.length === 0 && !loading && (
+            <div className="garden__empty">
+              <img src="/src/assets/meditate.png" alt="Empty garden" className="garden__empty__icon" />
+              <h2 className="garden__empty__title">
+                Looks like your garden is feeling a bit lonely.
+              </h2>
+              <Link to={"/garden/add"} className="garden__empty__description">
+                Let's add some new plants!
+              </Link>
+            </div>
+          )}
         <div className="garden__cards">
           {plants.map((plant, index) => (
-            <Link to={`/garden/plant/${plant.slug}`} className={`garden__card`} key={plant.id} style={{
+            <Link to={`/plant/${plant.slug}`} className={`garden__card`} key={plant.id} style={{
               animationDelay: `${index/10}s`
             }}>
               {plant.image_path && (

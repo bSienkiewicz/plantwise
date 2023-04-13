@@ -73,6 +73,18 @@ $chat-width: 330px;
     }
 }
 
+#content{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    background-color: $container-bg;
+    border-radius: 8px;
+    padding:12px;
+}
+
 #chat{
     width: 330px;
     height: 100%;

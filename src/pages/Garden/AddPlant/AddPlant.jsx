@@ -5,23 +5,20 @@ import { ReactSVG } from "react-svg";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../../components/Loader/Loader";
+import slugify from "slugify";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function AddPlant({ setNavbarData }) {
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
-  const [devices, setDevices] = useState([]);
-  const [error, setError] = useState(false);
+  const [slug, setSlug] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [plantDevice, setPlantDevice] = useState(null);
+  const [devices, setDevices] = useState([]);
   const [requestedDevices, setRequestedDevices] = useState([]);
   const [requestedPlants, setRequestedPlants] = useState([]);
-
-  useEffect(() => {
-    setNavbarData({
-      title: "Add plant",
-      bg_color: "#565656",
-    });
-  }, [setNavbarData]);
-
   const [settings, setSettings] = useState({
     moisture: {
       min_value: 30,
@@ -33,6 +30,14 @@ export default function AddPlant({ setNavbarData }) {
     },
   });
   const imgTimeoutRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setNavbarData({
+      title: "Add plant",
+      bg_color: "#565656",
+    });
+  }, [setNavbarData]);
 
   useEffect(() => {
     let subscribed = true;
@@ -71,13 +76,12 @@ export default function AddPlant({ setNavbarData }) {
         return !isInPlant;
       });
       setDevices(filteredDevices);
+      setPlantDevice(devices[0]);
     }
   }, [requestedDevices]);
 
   useEffect(() => {
-    if (requestedPlants.length > 0) {
-      setName(`Plant #${requestedPlants.length + 1}`);
-    }
+    setName(`Plant #${requestedPlants.length + 1}`);
   }, [requestedPlants]);
 
   const handleImageChange = (e) => {
@@ -88,6 +92,50 @@ export default function AddPlant({ setNavbarData }) {
       setImage(e.target.value);
     }, 1000);
   };
+
+  const handleNameChange = (e) => {
+    const slug = slugify(e.target.value, {
+      replacement: "-",
+      remove: /[*+~.()'"!:@#]/g,
+      lower: true,
+    });
+    const isSlugTaken = requestedPlants.some((plant) => plant.slug === slug);
+    setError(isSlugTaken);
+    setName(e.target.value);
+    setSlug(slug);
+  };
+
+  const handleAddPlant = () => {
+    if (error){
+      toast.error("There is already a plant with that name!");
+      return;
+    }
+    const plant = {
+      name: name,
+      slug: slug,
+      image_path: image,
+      description: description,
+      device: plantDevice,
+      moisture_min: settings.moisture.min_value,
+      moisture_max: settings.moisture.max_value,
+      temperature_min: settings.temperature.min_value,
+      temperature_max: settings.temperature.max_value,
+    };
+
+    console.log(plant);
+
+    toast.promise(axios.post(`${window.CORE_URL}/plants`, plant), {
+      pending: `Adding ${name}...`,
+      success: `${name} added!`,
+      error: `Error while adding ${name}`,
+    }).then((response) => {
+      navigate("/garden");
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+
 
   return (
     <>
@@ -102,19 +150,21 @@ export default function AddPlant({ setNavbarData }) {
             </div>
           )}
           <div className="add_plant__header__title">
-            <p>Name your plant</p>
+            <p>Name your plant </p>
             <input
               type="text"
+              {...(error && { className: "error-input" })}
               max={20}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => handleNameChange(e)}
             />
+            {error && (<p className="error-msg">There is already a plant with that name!</p>)}
           </div>
         </div>
         <div className="add_plant__body">
           <div className="input-group">
             <p>Description</p>
-            <textarea rows="3"></textarea>
+            <textarea rows="3" onChange={(e) => setDescription(e.target.value)}></textarea>
           </div>
           <div className="row">
             <div className="input-group">
@@ -125,9 +175,9 @@ export default function AddPlant({ setNavbarData }) {
               <div className="input-group">
                 <p>Choose a device</p>
                 <div className="add_plant__devices__list">
-                  <select className="add_plant__devices__list__item">
+                  <select className="add_plant__devices__list__item" onChange={(e) => setPlantDevice(e.target.value)}>
                     {devices.map((device) => (
-                      <option>{device.name}</option>
+                      <option key={device.id} value={device.id}>{device.name} [{device.id}]</option>
                     ))}
                   </select>
                 </div>
@@ -212,7 +262,7 @@ export default function AddPlant({ setNavbarData }) {
               </div>
             </div>
           </div>
-          <button className="btn btn-primary">Add new plant</button>
+          <button className="btn btn-primary" onClick={() => handleAddPlant()}>Add new plant</button>
         </div>
       </div>
     </>

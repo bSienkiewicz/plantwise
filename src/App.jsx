@@ -49,7 +49,7 @@ export default function App() {
         }
       )
       .then(() => {
-        subscribeMQTT("plantwise/device/msg", handleReceived);
+        subscribeMQTT("plantwise/#", handleReceived);
       })
       .catch((err) => {
         console.error(err);
@@ -81,10 +81,6 @@ export default function App() {
     setReceivedMessage(message);
   };
 
-  function updateNavbarData(newData){
-    setNavbarData(newData);
-  };
-
   const routes = [
     { path: "/", element: <Dashboard setNavbarData={setNavbarData}/> },
     { path: "/garden", element: <Garden setNavbarData={setNavbarData}/> },
@@ -113,6 +109,7 @@ export default function App() {
         <NavbarContext.Provider value={navbarData}>
           <div id="main">
             <Navbar />
+            <div id="content">
             <Routes>
               {routes.map((route, index) => (
                 <Route
@@ -123,6 +120,7 @@ export default function App() {
                 />
               ))}
             </Routes>
+            </div>
           </div>
         </NavbarContext.Provider>
         <Chat message={receivedMessage} connected={connectedMQTT} />

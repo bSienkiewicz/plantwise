@@ -1,6 +1,7 @@
 @use '/src/abstracts/' as *;
 
 .add_plant {
+  padding: 0 !important;
 
   &__header{
     background: linear-gradient(180deg, #565656 0%, $button-active 100%);
@@ -16,10 +17,14 @@
         border-radius: 8px;
         aspect-ratio: 1/1;
         background-color: $button-active;
+        object-fit: cover;
+        object-position: center;
         color:$gray-700;
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 0;
+        margin: 0;
 
         @include mq($md){
             height: 100px;
@@ -38,6 +43,11 @@
             width: 100%;
             border-bottom: 2px solid $gray-500;
 
+            &.error-input{
+              color:rgb(255, 113, 113) !important;
+              border-bottom: 2px solid rgb(255, 113, 113);
+            }
+
             &:focus{
                 outline: none;
             }
@@ -46,6 +56,11 @@
         p{
             margin: 0;
             font-size: 12px;
+        }
+
+        .error-msg{
+          color: rgb(255, 113, 113);
+          font-size: 12px;
         }
     }
   }

@@ -36,6 +36,9 @@ export function subscribeMQTT(topic, callback) {
 
     client.on('message', (topic, message, packet) => {
       if (packet.retain) return;
+      if (topic === 'plantwise/backend/add') {
+        toast.success("Device added!");
+      }
       callback(topic, message.toString());
     });
   }
