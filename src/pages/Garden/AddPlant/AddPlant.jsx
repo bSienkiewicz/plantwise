@@ -15,6 +15,7 @@ export default function AddPlant({ setNavbarData }) {
     setNavbarData({
       title: "Add plant",
       bg_color: "#565656",
+      shade: true
     });
   }, [setNavbarData]);
 

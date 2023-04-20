@@ -23,7 +23,9 @@
 
   &--plant {
     color: white;
+  }
 
+  &.shade{
     &::after {
       content: "";
       width: 100%;
@@ -31,12 +33,17 @@
       position: absolute;
       top: 0;
       left: 0;
-      background-color: rgba(0, 0, 0, 0.5);
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.3) 100%
+      );
       z-index: 1;
     }
   }
 
   &__logo {
+    z-index: 5;
     svg {
       max-height: 50%;
       height: auto;
@@ -55,10 +62,22 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-size: 200%;
+    opacity: 0;
+    background-size: 100%;
     background-position: center;
     filter: blur(5px);
-    transform: scale(2);
+    animation: show-bg 0.5s ease forwards;
+  }
+
+  @keyframes show-bg {
+    0% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
   }
 
   &__about {

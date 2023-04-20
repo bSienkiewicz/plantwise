@@ -18,6 +18,7 @@ export default function ManageDevice({ setNavbarData }) {
     setNavbarData({
       title: state ? "Edit device" : "Add device",
       bg_color: "#565656",
+      shade: true
     });
   }, [setNavbarData]);
 
