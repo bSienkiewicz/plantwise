@@ -4,7 +4,7 @@ import axios from "axios";
 export const fetchPlants = createAsyncThunk(
     "plants/fetchPlants",
     async () => {
-      const response = await axios.get(`${window.CORE_URL}/plants`);
+      const response = await axios.get(`${window.CORE_URL}/api/v1/plants`);
       return response.data;
     }
   );

@@ -54,20 +54,7 @@ const Sidebar = ({
             />
           </div>
         )}
-        <div className={`sidebar__logo`}>
-          <Link to="/">
-          <ReactSVG
-            src={
-              smallSidebar
-                ? "/logo-small-leaf-rot.svg"
-                : "/logo-wide-modern-white.svg"
-            }
-            className={
-              smallSidebar ? "sidebar__logo--small" : "sidebar__logo--wide"
-            }
-          />
-          </Link>
-        </div>
+        
         <ul
           className={`sidebar__menu ${
             smallSidebar ? "sidebar__menu--small" : ""

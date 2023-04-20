@@ -4,7 +4,7 @@ import axios from "axios";
 export const fetchDevices = createAsyncThunk(
     "devices/fetchDevices",
     async () => {
-      const response = await axios.get(`${window.CORE_URL}/devices`);
+      const response = await axios.get(`${window.CORE_URL}/api/v1/devices`);
       return response.data;
     }
   );

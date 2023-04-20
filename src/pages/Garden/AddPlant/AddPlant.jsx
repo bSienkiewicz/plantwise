@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 import Loader from "../../../components/Loader/Loader";
 import slugify from "slugify";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPlants } from "../../../store/plants/plants";
 
 export default function AddPlant({ setNavbarData }) {
   useEffect(() => {
@@ -16,6 +17,8 @@ export default function AddPlant({ setNavbarData }) {
       bg_color: "#565656",
     });
   }, [setNavbarData]);
+
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -42,9 +45,8 @@ export default function AddPlant({ setNavbarData }) {
   const plants = useSelector((state) => state.plants.plants);
   const plantsLoading = useSelector((state) => state.plants.loading);
   const devicesLoading = useSelector((state) => state.devices.loading);
-  const plantsError = useSelector((state) => state.plants.error)
-  const devicesError = useSelector((state) => state.devices.error)
-
+  const plantsError = useSelector((state) => state.plants.error);
+  const devicesError = useSelector((state) => state.devices.error);
 
   useEffect(() => {
     if (devices) {
@@ -54,9 +56,7 @@ export default function AddPlant({ setNavbarData }) {
       });
       // return only devices that are not in plants
       const filteredDevices = configuredDevices.filter((device) => {
-        const isInPlant = plants.some(
-          (plant) => plant.device.id === device.id
-        );
+        const isInPlant = plants.some((plant) => plant.device.id === device.id);
         return !isInPlant;
       });
       setFilteredDevices(filteredDevices);
@@ -65,8 +65,9 @@ export default function AddPlant({ setNavbarData }) {
   }, [devices]);
 
   useEffect(() => {
-    if(plants){
+    if (plants) {
       setName(`Plant ${plants.length + 1}`);
+      setSlug(nameToSlug(`Plant ${plants.length + 1}`));
     }
   }, [filteredDevices]);
 
@@ -84,7 +85,6 @@ export default function AddPlant({ setNavbarData }) {
     }
   }, [plantsLoading, devicesLoading]);
 
-
   const handleImageChange = (e) => {
     if (imgTimeoutRef.current) {
       clearTimeout(imgTimeoutRef.current);
@@ -94,12 +94,17 @@ export default function AddPlant({ setNavbarData }) {
     }, 1000);
   };
 
-  const handleNameChange = (e) => {
-    const slug = slugify(e.target.value, {
+  const nameToSlug = (name) => {
+    const slug = slugify(name, {
       replacement: "-",
       remove: /[*+~.()'"!:@#]/g,
       lower: true,
     });
+    return slug;
+  };
+
+  const handleNameChange = (e) => {
+    const slug = nameToSlug(e.target.value);
     const isSlugTaken = plants.some((plant) => plant.slug === slug);
     setError(isSlugTaken);
     setName(e.target.value);
@@ -125,22 +130,21 @@ export default function AddPlant({ setNavbarData }) {
 
     console.log(plant);
 
-    toast.promise(axios.post(`${window.CORE_URL}/plants`, plant), {
+    toast.promise(axios.post(`${window.CORE_URL}/api/v1/plants`, plant), {
       pending: `Adding ${name}...`,
       success: `${name} added!`,
       error: `Error while adding ${name}`,
     }).then((response) => {
+      dispatch(fetchPlants());
       navigate("/garden");
     }).catch((error) => {
       console.error(error);
     });
   }
 
-
-
   return (
     <Fragment>
-      <div className="add_plant" >
+      <div className="add_plant">
         {loading && <Loader />}
         <div className="add_plant__header">
           {image ? (
@@ -159,26 +163,38 @@ export default function AddPlant({ setNavbarData }) {
               value={name}
               onChange={(e) => handleNameChange(e)}
             />
-            {error && (<p className="error-msg">There is already a plant with that name!</p>)}
+            {error && (
+              <p className="error-msg">
+                There is already a plant with that name!
+              </p>
+            )}
           </div>
         </div>
         <div className="add_plant__body">
           <div className="input-group">
             <p>Description</p>
-            <textarea rows="3" onChange={(e) => setDescription(e.target.value)}></textarea>
+            <textarea
+              rows="3"
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
           </div>
           <div className="row">
             <div className="input-group">
-              <p>Image url</p>
+              <p>Photo of your plant</p>
               <input type="text" onChange={(e) => handleImageChange(e)} />
             </div>
             <div className="add_plant__devices">
               <div className="input-group">
                 <p>Choose a device</p>
                 <div className="add_plant__devices__list">
-                  <select className="add_plant__devices__list__item" onChange={(e) => setPlantSelectedDevice(e.target.value)}>
+                  <select
+                    className="add_plant__devices__list__item"
+                    onChange={(e) => setPlantSelectedDevice(e.target.value)}
+                  >
                     {filteredDevices.map((device) => (
-                      <option key={device.id} value={device.id}>{device.name} [{device.id}]</option>
+                      <option key={device.id} value={device.id}>
+                        {device.name} [{device.id}]
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -203,8 +219,8 @@ export default function AddPlant({ setNavbarData }) {
                         ...settings.moisture,
                         min_value: e.target.value,
                       },
-                    });}
-                  }
+                    });
+                  }}
                 />
 
                 <p>Max</p>
@@ -220,8 +236,8 @@ export default function AddPlant({ setNavbarData }) {
                         ...settings.moisture,
                         max_value: e.target.value,
                       },
-                    });}
-                  }
+                    });
+                  }}
                 />
               </div>
 
@@ -240,8 +256,8 @@ export default function AddPlant({ setNavbarData }) {
                         ...settings.temperature,
                         min_value: e.target.value,
                       },
-                    });}
-                  }
+                    });
+                  }}
                 />
 
                 <p>Max</p>
@@ -257,13 +273,15 @@ export default function AddPlant({ setNavbarData }) {
                         ...settings.temperature,
                         max_value: e.target.value,
                       },
-                    });}
-                  }
+                    });
+                  }}
                 />
               </div>
             </div>
           </div>
-          <button className="btn btn-primary" onClick={() => handleAddPlant()}>Add new plant</button>
+          <button className="btn btn-primary" onClick={() => handleAddPlant()}>
+            Add new plant
+          </button>
         </div>
       </div>
     </Fragment>

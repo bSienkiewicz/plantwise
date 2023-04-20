@@ -8,6 +8,7 @@
   align-items: center;
   position: relative;
   z-index: 100;
+  padding: $padding-mobile;
 
   @media screen and (min-width: $sm) {
     display: none;

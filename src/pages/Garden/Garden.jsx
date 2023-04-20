@@ -1,8 +1,5 @@
 import { useEffect, useState, Fragment } from "react";
-import Navbar from "../../components/Navbar/Navbar";
 import "./Garden.scss";
-import { toast } from "react-toastify";
-import axios from "axios";
 import { ReactSVG } from "react-svg";
 import Loader from "../../components/Loader/Loader";
 import { Link } from "react-router-dom";
@@ -28,10 +25,6 @@ export default function Garden({setNavbarData}) {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(plants)
-  }, [plants])
-
   return (
     <Fragment>
       <div className="garden" >
@@ -50,7 +43,7 @@ export default function Garden({setNavbarData}) {
         {plants &&  (
         <div className="garden__cards">
           {plants.map((plant, index) => (
-            <Link to={`/plant/${plant.slug}`} className={`garden__card`} key={plant.id} style={{
+            <Link to={`/garden/${plant.slug}`} className={`garden__card`} key={plant.id} style={{
               animationDelay: `${index/10}s`
             }}>
               {plant.image_path && (

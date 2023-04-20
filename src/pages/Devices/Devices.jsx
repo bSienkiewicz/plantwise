@@ -30,6 +30,10 @@ export default function Devices({setNavbarData}) {
       buttons: navButtons,
     });
   }, [setNavbarData]);
+
+  useEffect(() => {
+    console.log("Loading:" + devicesLoading)
+    }, [devicesLoading])
   
 
   const renderDevices = (device, index) => {

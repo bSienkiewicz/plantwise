@@ -1,8 +1,6 @@
 import mqtt from 'mqtt';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-
-// const mqttUrl = 'mqtt://test.mosquitto.org';
 let client = null;
 
 export function connectMQTT(host, options) {

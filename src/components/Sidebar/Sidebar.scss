@@ -12,11 +12,9 @@ $font-size: 16px;
   box-sizing: border-box;
   align-items: center;
   transition: 0.3s ease all;
-  overflow: hidden;
   border-radius: 8px;
 
   &--small{
-    padding-top: 40px;
   }
 
   &__logo {
@@ -52,7 +50,7 @@ $font-size: 16px;
     height: 100%;
     padding: 0;
     gap: 20px;
-    padding: 10px;
+    padding: 0 10px;
     box-sizing: border-box;
 
     &--small{
@@ -114,21 +112,22 @@ $font-size: 16px;
     z-index: 100;
     background: $primary;
     color:$black;
-    border-radius: 8px;
-    width: 25px;
-    height: 25px;
+    border-radius: 99px;
+    width: 30px;
+    height: 30px;
     display: flex;
     justify-content: center;
+    transform: translate(21px, -21px);
+    transition: 0.5s ease all;
     align-items: center;
 
     &_icon {
-      transform: translateX(-1px);
-      transform: translateY(-1px);
+      transform: translateX(-3px);
+      transform: translateY(-3px);
     }
 
     &.rotate {
-      transform: rotate(180deg);
-      width: 100%;
+      transform: translate(21px, -21px) rotate(180deg);
     }
 
     @include mq($md) {

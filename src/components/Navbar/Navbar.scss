@@ -1,36 +1,55 @@
 @use '/src/abstracts/' as *;
 
 .navbar {
-  background-color: $container-bg;
+  background: $container-bg;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   position: relative;
   border-radius: 8px;
-  padding:12px;
+  padding: $padding;
   overflow: hidden;
   transition: 0.8s ease all;
+  grid-column-start: span 2;
+  height: $navbar-h;
+  flex-shrink: 0;
 
   @include mq($sm) {
     padding: 22px 12px;
+    justify-content: space-between;
+    height: $navbar-h-small;
+    padding: $padding-mobile*2;
   }
 
-  &--plant{
-    color:white;
+  &--plant {
+    color: white;
 
-    &::after{
-        content: '';
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color:rgba(0, 0, 0, 0.5);
-        z-index: 1;
+    &::after {
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
     }
   }
 
-  &__image{
+  &__logo {
+    svg {
+      max-height: 50%;
+      height: auto;
+      margin: 0 30px;
+      transform: translateY(2px);
+    }
+
+    @include mq($sm) {
+      display: none;
+    }
+  }
+
+  &__image {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -55,7 +74,7 @@
     margin: 0;
   }
 
-  &__device{
+  &__device {
     font-size: 14px;
     font-weight: 500;
     margin: 0;
@@ -63,22 +82,26 @@
     color: #b4b4b4;
     vertical-align: bottom;
 
-    @include mq($lg){
+    @include mq($lg) {
       display: none;
     }
   }
 
-  &__buttons{
+  &__buttons {
     display: flex;
     justify-content: flex-end;
     margin-left: auto;
     gap: 20px;
     z-index: 5;
+
+    @include mq($sm) {
+      margin-left: 0;
+    }
   }
 
-  &__button{
+  &__button {
     background-color: transparent;
-    color:$text;
+    color: $text;
     letter-spacing: 0.7px;
     border: none;
     border-radius: 5px;
@@ -91,20 +114,19 @@
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    
 
-    &--nav_bg{
-      color:white;
+    &--nav_bg {
+      color: white;
     }
 
-    @include mq($sm){
+    @include mq($sm) {
       padding: 10px 10px;
     }
 
-    &-text{
+    &-text {
       margin: 0;
 
-      @include mq($lg){
+      @include mq($md) {
         display: none;
       }
     }

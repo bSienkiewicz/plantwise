@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { fetchDevices } from "./store/devices/devices";
 import { fetchPlants } from "./store/plants/plants";
+import { setMqttConnected } from "./store/system/system";
 
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar/Navbar";
@@ -43,16 +44,17 @@ export default function App() {
   useEffect(() => {
     toast
       .promise(
-        connectMQTT("ws://broker.emqx.io/mqtt", {
-          clientId: "mqttjs_3233323232123",
-          port: 8083,
-          keepalive: 120,
+        connectMQTT("wss://e2b8b9bf.ala.us-east-1.emqxsl.com/mqtt", {
+          port: 8084,
+          username: "plantwise-hub",
+          password: "Pl@ntwise-hub667448",
         }),
         {
           error: "Error while connecting to MQTT broker",
         }
       )
       .then(() => {
+        dispatch(setMqttConnected(true));
         subscribeMQTT("plantwise/#", handleReceived);
       })
       .catch((err) => {
@@ -104,8 +106,14 @@ export default function App() {
       path: "/garden/add",
       element: <AddPlant setNavbarData={setNavbarData} />,
     },
-    { path: "/plant/:id", element: <Plant setNavbarData={setNavbarData} /> },
-    { path: "/devices", element: <Devices setNavbarData={setNavbarData} /> },
+    {
+      path: "/garden/:slug",
+      element: <Plant setNavbarData={setNavbarData} />,
+    },
+    {
+      path: "/devices",
+      element: <Devices setNavbarData={setNavbarData} />,
+    },
     {
       path: "/devices/add",
       element: <AddDevice setNavbarData={setNavbarData} />,
@@ -114,36 +122,40 @@ export default function App() {
 
   return (
     <Fragment>
-      <div id="App" className={`${smallSidebar ? "sidebar-small" : ""}`}>
-        <div id="statusbar">
-          <h3>ELO</h3>
-        </div>
-        <div id="sidebar">
-          <Sidebar
-            setSmallSidebar={setSmallSidebar}
-            smallSidebar={smallSidebar}
-          />
-        </div>
-        <NavbarContext.Provider value={navbarData}>
-          <div id="main">
-            <Navbar />
-            <div id="content">
-              <Routes>
-                {routes.map((route, index) => (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={route.element}
-                    component={route.component}
-                  />
-                ))}
-              </Routes>
+      <NavbarContext.Provider value={navbarData}>
+        <div id="App" className={`${smallSidebar ? "sidebar-small" : ""}`}>
+          <div id="statusbar">
+            <h3>ELO</h3>
+          </div>
+          <Navbar />
+          <div id="content">
+            <div
+              id="sidebar"
+              className={`${smallSidebar ? "sidebar-small" : ""}`}
+            >
+              <Sidebar
+                setSmallSidebar={setSmallSidebar}
+                smallSidebar={smallSidebar}
+              />
+            </div>
+            <div id="main">
+              <div id="container">
+                <Routes>
+                  {routes.map((route, index) => (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={route.element}
+                      component={route.component}
+                    />
+                  ))}
+                </Routes>
+              </div>
             </div>
           </div>
-        </NavbarContext.Provider>
-        <Chat message={receivedMessage} connected={connectedMQTT} />
-      </div>
-
+          <Chat message={receivedMessage} connected={connectedMQTT} />
+        </div>
+      </NavbarContext.Provider>
       <ToastContainer theme="dark" />
     </Fragment>
   );

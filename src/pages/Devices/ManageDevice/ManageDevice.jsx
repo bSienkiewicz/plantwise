@@ -48,7 +48,7 @@ export default function ManageDevice({ setNavbarData }) {
 
     if (state) {
       toast
-        .promise(axios.put(`${window.CORE_URL}/devices/${deviceID}`, device), {
+        .promise(axios.put(`${window.CORE_URL}/api/v1/devices/${deviceID}`, device), {
           pending: "Updating device...",
           success: `${deviceName} updated!`,
           error: "Error while updating device",
@@ -63,7 +63,7 @@ export default function ManageDevice({ setNavbarData }) {
         });
     } else {
       toast
-        .promise(axios.post(`${window.CORE_URL}/devices`, device), {
+        .promise(axios.post(`${window.CORE_URL}/api/v1/devices`, device), {
           pending: "Adding device...",
           success: `${deviceName} added!`,
           error: "Error while adding device",
@@ -85,7 +85,7 @@ export default function ManageDevice({ setNavbarData }) {
     );
     if (!consent) return;
     toast
-      .promise(axios.delete(`${window.CORE_URL}/devices/${deviceID}`), {
+      .promise(axios.delete(`${window.CORE_URL}/api/v1/devices/${deviceID}`), {
         pending: "Deleting device...",
         success: "Device deleted!",
         error: "Error while deleting device",
