@@ -8,13 +8,12 @@ import { Link } from "react-router-dom";
 import moment from "moment/moment";
 
 import {useSelector, useDispatch} from 'react-redux'
-import {increment, decrement} from '../../store/counter/counter'
 
 const navButtons = [
   {
     icon: "/icons/add-icon.svg",
     text: "Add new device",
-    path: "/devices/add",
+    path: "/devices/new-device",
   },
 ];
 
@@ -23,18 +22,12 @@ export default function Devices({setNavbarData}) {
   const devicesLoading = useSelector(state => state.devices.loading)
   const devicesError = useSelector(state => state.devices.error)
 
-
   useEffect(() => {
     setNavbarData({
       title: "Devices",
       buttons: navButtons,
     });
   }, [setNavbarData]);
-
-  useEffect(() => {
-    console.log("Loading:" + devicesLoading)
-    }, [devicesLoading])
-  
 
   const renderDevices = (device, index) => {
     const { name, configured, mac_address, id, type, last_connected } = device;
@@ -47,7 +40,7 @@ export default function Devices({setNavbarData}) {
 
     return (
       <Link
-        to={`/devices/add`}
+        to={`/devices/${id}`}
         state={{ device: device }}
         className={`devices__card ${unconfiguredClass}`}
         key={index}

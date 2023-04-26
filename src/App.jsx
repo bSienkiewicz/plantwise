@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { fetchDevices } from "./store/devices/devices";
 import { fetchPlants } from "./store/plants/plants";
 import { setMqttConnected } from "./store/system/system";
-
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -15,8 +14,10 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Garden from "./pages/Garden/Garden";
 import AddPlant from "./pages/Garden/AddPlant/AddPlant";
 import Devices from "./pages/Devices/Devices";
-import AddDevice from "./pages/Devices/ManageDevice/ManageDevice";
+import ManageDevice from "./pages/Devices/EditDevice/EditDevice";
+import AddDevice from "./pages/Devices/AddDevice/AddDevice";
 import Plant from "./pages/Garden/Plant/Plant";
+import NotFound from "./pages/NotFound/NotFound";
 import {
   connectedMQTT,
   connectMQTT,
@@ -103,7 +104,7 @@ export default function App() {
     { path: "/", element: <Dashboard setNavbarData={setNavbarData} /> },
     { path: "/garden", element: <Garden setNavbarData={setNavbarData} /> },
     {
-      path: "/garden/add",
+      path: "/garden/add-plant",
       element: <AddPlant setNavbarData={setNavbarData} />,
     },
     {
@@ -115,8 +116,16 @@ export default function App() {
       element: <Devices setNavbarData={setNavbarData} />,
     },
     {
-      path: "/devices/add",
+      path: "/devices/:id",
+      element: <ManageDevice setNavbarData={setNavbarData} />,
+    },
+    {
+      path: "/devices/new-device",
       element: <AddDevice setNavbarData={setNavbarData} />,
+    },
+    {
+      path: "*",
+      element: <NotFound setNavbarData={setNavbarData}  />,
     },
   ];
 

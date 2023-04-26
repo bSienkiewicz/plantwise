@@ -1,6 +1,6 @@
 @use "/src/abstracts/" as *;
 
-.add_device {
+.edit_device {
   width: 100%;
   height: 100%;
   display: flex;
@@ -11,6 +11,7 @@
   position: relative;
   background-color: $container-bg;
   border-radius: 8px;
+
   &__body {
     z-index: 2;
     display: grid;
@@ -51,7 +52,7 @@
       border: 1px solid $gray-600;
       background-color: transparent;
       color: $text;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
       transition: 0.3s ease all;
@@ -69,6 +70,7 @@
     gap: 10px;
     margin: 0 0 12px 0;
     background-color: $button-active;
+    padding: 12px;
     border-radius: 6px;
     span {
       background-color: $primary;
@@ -94,36 +96,38 @@
     }
   }
 
-  &__input {
-    width: 100%;
-    padding: 11px 15px;
-    box-sizing: border-box;
-    border: 1px solid $gray-600;
-    color: $primary;
-    font-weight: bold;
-    border-radius: 6px;
-    background-color: $button-active;
-    font-family: "Poppins", sans-serif;
-    font-size: 12px;
-
-    &::placeholder {
-      font-family: "Poppins", sans-serif;
-      font-weight: normal;
-    }
-
-    &:disabled {
-      background: $gray-200;
-      color: $gray-400;
-    }
+  & input.error{
+    border-bottom: 2px solid red !important;
+    color: red;
   }
+
+  // &__input {
+  //   width: 100%;
+  //   padding: 11px 15px;
+  //   box-sizing: border-box;
+  //   border: 1px solid $gray-600;
+  //   color: $primary;
+  //   font-weight: bold;
+  //   border-radius: 6px;
+  //   background-color: $button-active;
+  //   font-family: "Poppins", sans-serif;
+  //   font-size: 12px;
+
+  //   &::placeholder {
+  //     font-family: "Poppins", sans-serif;
+  //     font-weight: normal;
+  //   }
+
+  //   &:disabled {
+  //     background: $gray-200;
+  //     color: $gray-400;
+  //   }
+  // }
 
   &__buttons {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-  }
-
-  &__header {
   }
 }

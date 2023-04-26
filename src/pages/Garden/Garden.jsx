@@ -14,7 +14,7 @@ export default function Garden({setNavbarData}) {
     {
       text: "Add plant",
       icon: "/icons/add-icon.svg",
-      path: "/garden/add",
+      path: "/garden/add-plant",
     },
   ];
 

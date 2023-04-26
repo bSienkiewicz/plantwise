@@ -32,14 +32,14 @@ const Navbar = () => {
   }, [image_url]);
 
   return (
-    <div className={`navbar ${shade && "shade"} ${image_url && "navbar--plant"}`} style={container_style}>
+    <div className={`navbar ${shade ? "shade" : ""} ${image_url ? "navbar--plant" : ''}`} style={container_style}>
       {image_url && (
         <div className="navbar__image" style={isImageLoaded ? image_style : {}} onLoad={() => setIsImageLoaded(true)}></div>
       )}
       <div className='navbar__logo'>
           <Link to="/">
           <ReactSVG
-            src="/logo-wide-modern-white.svg"
+            src="/logo-wide-modern-black.svg"
           />
           </Link>
         </div>

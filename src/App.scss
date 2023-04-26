@@ -9,9 +9,9 @@
     transition: 0.3s ease all;
     overflow: hidden;
     box-sizing: border-box;
-    color: $white;
+    color: $black;
     padding: 12px;
-    background-color: $black;
+    background-color: $white;
 
     @include mq($sm){
         padding: $padding-mobile;

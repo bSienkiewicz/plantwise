@@ -14,7 +14,7 @@ export default function AddPlant({ setNavbarData }) {
   useEffect(() => {
     setNavbarData({
       title: "Add plant",
-      bg_color: "#565656",
+      bg_color: "#c0c0c0",
       shade: true
     });
   }, [setNavbarData]);
